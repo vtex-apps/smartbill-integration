@@ -1,15 +1,14 @@
 {
-  "name": "service-example",
+  "name": "smartbill",
   "vendor": "vtex",
-  "version": "0.2.0",
-  "title": "Service Example",
-  "description": "Reference app for VTEX IO Services",
-  "mustUpdateAt": "2018-01-04",
+  "version": "0.0.1",
+  "title": "Smartbill",
+  "description": "Smartbill Integration",
+  "mustUpdateAt": "2022-08-28",
   "categories": [],
   "dependencies": {},
   "builders": {
-    "node": "6.x",
-    "docs": "0.x"
+    "node": "6.x"
   },
   "scripts": {
     "prereleasy": "bash lint.sh"
@@ -19,16 +18,36 @@
     {
       "name": "outbound-access",
       "attrs": {
-        "host": "httpstat.us",
-        "path": "*"
+        "host": "ws.smartbill.ro",
+        "path": "/SBORO/*"
       }
-    },
-    {
-      "name": "colossus-fire-event"
-    },
-    {
-      "name": "colossus-write-logs"
     }
   ],
+  "settingsSchema": {
+    "title": "Innoship",
+    "type": "object",
+    "properties": {
+      "smarbillUsername": {
+        "title": "Smartbill Username",
+        "description": "Enter your smartbill username",
+        "type": "string"
+      },
+      "smarbillApiToken": {
+        "title": "Smartbill API TOKEN",
+        "description": "Enter your smartbill api token",
+        "type": "string"
+      },
+      "smarbillVatCode": {
+        "title": "Smartbill Vat Code",
+        "description": "Enter your vat code",
+        "type": "string"
+      },
+      "smarbillSeriesName": {
+        "title": "Smartbill Series Name",
+        "description": "Enter your series name",
+        "type": "string"
+      }
+    }
+  },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
