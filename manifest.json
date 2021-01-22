@@ -1,7 +1,7 @@
 {
   "name": "smartbill",
   "vendor": "vtexeurope",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "title": "Smartbill",
   "description": "Smartbill Integration",
   "mustUpdateAt": "2022-08-28",
