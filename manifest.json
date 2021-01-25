@@ -1,9 +1,16 @@
 {
   "name": "smartbill",
   "vendor": "vtexeurope",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "title": "Smartbill",
   "description": "Smartbill Integration",
+  "billingOptions": {
+    "termsURL": "https://compliance.vtex.com/gdpr/policies/vtex-privacy-policy",
+    "support": {
+      "url": "https://support.vtex.com/hc/requests"
+    },
+    "free": true
+  },
   "mustUpdateAt": "2022-08-28",
   "categories": [],
   "dependencies": {},
