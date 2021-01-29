@@ -1236,10 +1236,10 @@
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
   integrity sha512-te5lMAWii1uEJ4FwLjzdlbw3+n0FZNOvFXHxQDKeT0dilh7HOzdMzV2TrJVUzq8ep7J4Na8OUYPRLSQkJHAlrg==
 
-"@vtex/api@6.37.1":
-  version "6.37.1"
-  resolved "https://registry.yarnpkg.com/@vtex/api/-/api-6.37.1.tgz#d6ded4f4a98e10596729af7097cff18be43a0e54"
-  integrity sha512-24BaVHCIbkC84UWAlGPuTnUYIFngOpeRa4u/6KCJDnir5GXjoCWAkj4E7OoQ2uvBy/uvs9X2+DIkqtiz1x5bvw==
+"@vtex/api@6.39.0":
+  version "6.39.0"
+  resolved "https://registry.yarnpkg.com/@vtex/api/-/api-6.39.0.tgz#5f5b6c54713f4e3c6671d86feb3faec543b449f2"
+  integrity sha512-YoHLnMb0V2LMxoXQgIskbsHNkG/TprXjsE60RItHNjALx2b6/+gYFLSa8x/sJp+O6OJQQT3pSkFT7Ff5A8ER9g==
   dependencies:
     "@types/koa" "^2.11.0"
     "@types/koa-compose" "^3.2.3"
@@ -2129,6 +2129,11 @@ cross-spawn@^6.0.0:
     semver "^5.5.0"
     shebang-command "^1.2.0"
     which "^1.2.9"
+
+crypto-js@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.0.0.tgz#2904ab2677a9d042856a2ea2ef80de92e4a36dcc"
+  integrity sha512-bzHZN8Pn+gS7DQA6n+iUmBfl0hO5DJq++QP3U6uTucDtk/0iGpXd/Gg7CGR0p8tJhofJyaKoWBuJI4eAO00BBg==
 
 css.escape@^1.5.1:
   version "1.5.1"
@@ -5091,6 +5096,13 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
+
+simple-crypto-js@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/simple-crypto-js/-/simple-crypto-js-3.0.0.tgz#31ae53c291f1ca819d2c5f9fcdb2125ea0614713"
+  integrity sha512-5eSn5RTK+05iHFCkeCzhDuZY5Ek/rpws4k7oEpB7e3YxMBnJAEm/sN1FbWn/duiZgnIsDSuyti5pQr9oq12pyg==
+  dependencies:
+    crypto-js "^4.0.0"
 
 sisteransi@^1.0.3:
   version "1.0.3"

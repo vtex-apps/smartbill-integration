@@ -1,5 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 import { json } from 'co-body'
+import SimpleCrypto from 'simple-crypto-js'
 
 export async function generateInvoice(ctx: any, next: () => Promise<any>) {
   const body = await json(ctx.req)
@@ -7,8 +8,14 @@ export async function generateInvoice(ctx: any, next: () => Promise<any>) {
     clients: { smartbill },
   } = ctx
 
+  const settings = await smartbill.getSettings()
   const response = await smartbill.generateInvoice(body)
 
+  const simpleCrypto = new SimpleCrypto(settings.smarbillApiToken)
+
+  const cipherText = simpleCrypto.encrypt(response.number)
+
+  response.encryptedNumber = Buffer.from(cipherText).toString('base64')
   ctx.status = 200
   ctx.body = response
 
@@ -21,7 +28,11 @@ export async function showInvoice(ctx: any, next: () => Promise<any>) {
   } = ctx
 
   const { invoiceNumber } = ctx.vtex.route.params
-  const response = await smartbill.showInvoice(invoiceNumber)
+  const settings = await smartbill.getSettings()
+  const simpleCrypto = new SimpleCrypto(settings.smarbillApiToken)
+  const toDecrypt = Buffer.from(invoiceNumber, 'base64').toString('ascii')
+  const plainNumber = simpleCrypto.decrypt(toDecrypt)
+  const response = await smartbill.showInvoice(plainNumber.toString())
 
   ctx.status = 200
 
