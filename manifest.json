@@ -1,9 +1,9 @@
 {
-  "name": "smartbill",
+  "name": "SmartBill",
   "vendor": "vtexeurope",
   "version": "1.0.0",
-  "title": "Smartbill",
-  "description": "Smartbill Integration",
+  "title": "SmartBill",
+  "description": "SmartBill Integration",
   "billingOptions": {
     "termsURL": "https://compliance.vtex.com/gdpr/policies/vtex-privacy-policy",
     "support": {
@@ -25,7 +25,7 @@
     {
       "name": "outbound-access",
       "attrs": {
-        "host": "ws.smartbill.ro",
+        "host": "ws.SmartBill.ro",
         "path": "/SBORO/*"
       }
     }
@@ -35,22 +35,22 @@
     "type": "object",
     "properties": {
       "smarbillUsername": {
-        "title": "Smartbill Username",
-        "description": "Enter your smartbill username",
+        "title": "SmartBill Username",
+        "description": "Enter your SmartBill username",
         "type": "string"
       },
       "smarbillApiToken": {
-        "title": "Smartbill API TOKEN",
-        "description": "Enter your smartbill api token",
+        "title": "SmartBill API TOKEN",
+        "description": "Enter your SmartBill api token",
         "type": "string"
       },
       "smarbillVatCode": {
-        "title": "Smartbill Vat Code",
+        "title": "SmartBill Vat Code",
         "description": "Enter your vat code",
         "type": "string"
       },
       "smarbillSeriesName": {
-        "title": "Smartbill Series Name",
+        "title": "SmartBill Series Name",
         "description": "Enter your series name",
         "type": "string"
       }

@@ -19,7 +19,7 @@ vtex install vtexeurope.smartbill
 }
 ```
 
-Now, open the app settings on your admin - "https://your-store-name.myvtex.com/admin/apps" - click on the SmartBill app, and fill in the following:
+Open the app settings on your admin - "https://your-store-name.myvtex.com/admin/apps" - click on the SmartBill app and fill in the the following fields:
 
 - SmartBill Username
 - SmartBill API TOKEN
