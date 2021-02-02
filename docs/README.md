@@ -1,6 +1,6 @@
-# VTEX Smartbill
+# VTEX SmartBill
 
-This application allows you to generate invoices using the Smartbill API.
+This application allows you to generate invoices using the SmartBill API.
 
 ## Installation & Configuration
 
@@ -19,9 +19,18 @@ vtex install vtexeurope.smartbill
 }
 ```
 
-## Usage
+Now, open the app settings on your admin - "https://your-store-name.myvtex.com/admin/apps" - click on the SmartBill app, and fill in the following:
 
-POST - /smartbill/generate-invoice
+- SmartBill Username
+- SmartBill API TOKEN
+- SmartBill Vat Code
+- SmartBill Series Name
+
+## Exposed endpoints
+
+POST - /smartbill/generate-invoice (https://ws.smartbill.ro/SBORO/api/invoice)
+
+- [DOCS](https://api.smartbill.ro/#!/Facturi/addInvoicePublicApi)
 
 Request Example:
 
@@ -42,8 +51,12 @@ Response Example:
 }
 ```
 
-GET - /smartbill/show-invoice/:encryptedInvoiceNumber
+GET - /smartbill/show-invoice/:encryptedInvoiceNumber (https://ws.smartbill.ro/SBORO/api/invoice/pdf)
+
+- [DOCS](https://api.smartbill.ro/#!/Facturi/getFile)
 
 ## Important
+
+### This app is not supposed to be used as a standalone app, the endpoints should be consumed by other apps (e.g. vtexeurope.innoship)
 
 > **_NOTE:_** The secret key used to encrypt the invoice number is the Smartbill Token, if the token is changed the previously generated invoices will not be able to decrypt the invoice number. All invoice urls will not show the pdf.
