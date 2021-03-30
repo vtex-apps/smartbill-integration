@@ -8,13 +8,19 @@ export default class Smartbill extends ExternalClient {
     const settings = await this.getSettings()
     const todayDate = new Date().toISOString().slice(0, 10)
     const { clientProfileData: client } = order
+    const clientData: any = {
+      country: 'Romania',
+      email: client.email,
+      name: `${client.lastName} ${client.firstName}`,
+    }
+
+    if (client.isCorporate) {
+      clientData.vatCode = client.corporateDocument
+      clientData.name = client.tradeName
+    }
 
     return {
-      client: {
-        country: 'Romania',
-        email: client.email,
-        name: `${client.lastName} ${client.firstName}`,
-      },
+      client: clientData,
       companyVatCode: settings.smarbillVatCode,
       issueDate: todayDate,
       products: Smartbill.generateProducts(order),
