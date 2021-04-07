@@ -74,6 +74,15 @@ export default class Smartbill extends ExternalClient {
   public async showInvoice(invoiceNumber: any): Promise<any> {
     const settings = await this.getSettings()
 
+    // Create buffer object, specifying utf8 as encoding
+    const bufferObj = Buffer.from(
+      `${settings.smarbillUsername}:${settings.smarbillApiToken}`,
+      'utf8'
+    )
+
+    // Encode the Buffer as a base64 string
+    const smartBillAuthorization = bufferObj.toString('base64')
+
     return this.http.getStream(
       `/invoice/pdf?cif=${settings.smarbillVatCode}&seriesname=${settings.smarbillSeriesName}&number=${invoiceNumber}`,
       {
@@ -81,8 +90,7 @@ export default class Smartbill extends ExternalClient {
           Accept: 'application/octet-stream',
           'Content-Type': 'application/xml',
           'X-Vtex-Use-Https': true,
-          password: settings.smarbillApiToken,
-          username: settings.smarbillUsername,
+          Authorization: `Basic ${smartBillAuthorization}`,
         },
       }
     )
@@ -99,13 +107,21 @@ export default class Smartbill extends ExternalClient {
     const json = await this.generateJson(order)
     const settings = await this.getSettings()
 
+    // Create buffer object, specifying utf8 as encoding
+    const bufferObj = Buffer.from(
+      `${settings.smarbillUsername}:${settings.smarbillApiToken}`,
+      'utf8'
+    )
+
+    // Encode the Buffer as a base64 string
+    const smartBillAuthorization = bufferObj.toString('base64')
+
     return this.http.post('/invoice', json, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         'X-Vtex-Use-Https': true,
-        password: settings.smarbillApiToken,
-        username: settings.smarbillUsername,
+        Authorization: `Basic ${smartBillAuthorization}`,
       },
     })
   }
