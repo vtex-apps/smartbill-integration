@@ -45,7 +45,7 @@ export default class Smartbill extends ExternalClient {
   }
 
   public static generateProducts(order: any) {
-    return order.items.map((item: any) => {
+    let items = order.items.map((item: any) => {
       return {
         code: item.uniqueId,
         currency: order.storePreferencesData.currencyCode,
@@ -58,6 +58,21 @@ export default class Smartbill extends ExternalClient {
         taxPercentage: 19,
       }
     })
+    if (order.hasOwnProperty('shippingTotal') && order.shippingTotal > 0) {
+      items.push({
+        code: 'shipping-tax',
+        currency: order.storePreferencesData.currencyCode,
+        isTaxIncluded: true,
+        measuringUnitName: 'buc',
+        name: 'Shipping TAX',
+        price: order.shippingTotal,
+        quantity: 1,
+        taxName: 'Normala',
+        taxPercentage: 19,
+        isService: true
+      })
+    }
+    return items
   }
 
   constructor(context: IOContext, options?: InstanceOptions) {
