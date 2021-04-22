@@ -60,7 +60,7 @@ export default class Smartbill extends ExternalClient {
     })
     if (order.hasOwnProperty('shippingTotal') && order.shippingTotal > 0) {
       items.push({
-        code: 'sipping-tax',
+        code: 'shipping-tax',
         currency: order.storePreferencesData.currencyCode,
         isTaxIncluded: true,
         measuringUnitName: 'buc',
