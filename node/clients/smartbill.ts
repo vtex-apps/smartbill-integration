@@ -23,7 +23,7 @@ export default class Smartbill extends ExternalClient {
       client: clientData,
       companyVatCode: settings.smarbillVatCode,
       issueDate: todayDate,
-      products: Smartbill.generateProducts(order),
+      products: Smartbill.generateProducts(order, settings),
       seriesName: settings.smarbillSeriesName,
     }
   }
@@ -44,7 +44,7 @@ export default class Smartbill extends ExternalClient {
     return validate(settings, constraints, { format: 'flat' })
   }
 
-  public static generateProducts(order: any) {
+  public static generateProducts(order: any, settings: any) {
     let items = order.items.map((item: any) => {
       return {
         code: item.uniqueId,
@@ -58,13 +58,17 @@ export default class Smartbill extends ExternalClient {
         taxPercentage: 19,
       }
     })
-    if (order.hasOwnProperty('shippingTotal') && order.shippingTotal > 0) {
+
+    if (settings.invoiceShippingCost
+      && order.hasOwnProperty('shippingTotal')
+      && order.shippingTotal > 0
+    ) {
       items.push({
-        code: 'shipping-tax',
+        code: settings.invoiceShippingProductCode,
         currency: order.storePreferencesData.currencyCode,
         isTaxIncluded: true,
         measuringUnitName: 'buc',
-        name: 'Shipping TAX',
+        name: settings.invoiceShippingProductName,
         price: order.shippingTotal,
         quantity: 1,
         taxName: 'Normala',

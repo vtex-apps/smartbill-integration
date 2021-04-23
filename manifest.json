@@ -50,6 +50,23 @@
         "title": "SmartBill Series Name",
         "description": "Enter your series name",
         "type": "string"
+      },
+      "invoiceShippingCost": {
+        "title": "Invoice shipping cost",
+        "description": "Do you want to invoice the shipping cost?",
+        "type": "boolean"
+      },
+      "invoiceShippingProductName": {
+        "title": "Shipping cost product name",
+        "description": "Name of the shipping cost product that will appear on the invoice",
+        "type": "string",
+        "default": "Shipping TAX"
+      },
+      "invoiceShippingProductCode": {
+        "title": "Shipping cost product code",
+        "description": "Code of the shipping cost product that will appear on the invoice",
+        "type": "string",
+        "default": "shipping-tax"
       }
     }
   },
