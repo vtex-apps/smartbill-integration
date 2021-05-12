@@ -7,15 +7,15 @@ This application allows you to generate invoices using the SmartBill API.
 - Use the vtex toolbelt to install.
 
 ```bash
-vtex install vtexeurope.smartbill
+vtex install vtex.smartbill
 ```
 
-- Import the vtexeurope.smartbill app to your theme's dependencies in the manifest.json
+- Import the vtex.smartbill app to your theme's dependencies in the manifest.json
 
 ```json
 "dependencies": {
     ....
-    "vtexeurope.smartbill" : "0.x"
+    "vtex.smartbill" : "1.x"
 }
 ```
 
@@ -57,6 +57,6 @@ GET - /smartbill/show-invoice/:encryptedInvoiceNumber (https://ws.smartbill.ro/S
 
 ## Important
 
-### This app is not supposed to be used as a standalone app, the endpoints should be consumed by other apps (e.g. vtexeurope.innoship)
+### This app is not supposed to be used as a standalone app, the endpoints should be consumed by other apps (e.g. vtex.innoship)
 
 > **_NOTE:_** The secret key used to encrypt the invoice number is the Smartbill Token, if the token is changed the previously generated invoices will not be able to decrypt the invoice number. All invoice urls will not show the pdf.
