@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.2.1] - 2021-05-13
+
 ## [1.2.0] - 2021-04-29
 ### Added
 - Option to opt-in or opt-out of invoicing shipping cost from app settings.
