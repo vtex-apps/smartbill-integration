@@ -7,11 +7,18 @@ export default class Smartbill extends ExternalClient {
   public async generateJson(order: any) {
     const settings = await this.getSettings()
     const todayDate = new Date().toISOString().slice(0, 10)
-    const { clientProfileData: client } = order
+    const {
+      clientProfileData: client,
+      shippingData: { address },
+    } = order
+
     const clientData: any = {
       country: 'Romania',
       email: client.email,
       name: `${client.lastName} ${client.firstName}`,
+      address: `${address.street} ${address.number}`,
+      city: `${address.city}`,
+      county: `${address.state}`,
     }
 
     if (client.isCorporate) {
@@ -45,7 +52,7 @@ export default class Smartbill extends ExternalClient {
   }
 
   public static generateProducts(order: any, settings: any) {
-    let items = order.items.map((item: any) => {
+    const items = order.items.map((item: any) => {
       return {
         code: item.uniqueId,
         currency: order.storePreferencesData.currencyCode,
@@ -59,9 +66,11 @@ export default class Smartbill extends ExternalClient {
       }
     })
 
-    if (settings.invoiceShippingCost
-      && order.hasOwnProperty('shippingTotal')
-      && order.shippingTotal > 0
+    if (
+      settings.invoiceShippingCost &&
+      // eslint-disable-next-line no-prototype-builtins
+      order.hasOwnProperty('shippingTotal') &&
+      order.shippingTotal > 0
     ) {
       items.push({
         code: settings.invoiceShippingProductCode,
@@ -73,9 +82,10 @@ export default class Smartbill extends ExternalClient {
         quantity: 1,
         taxName: 'Normala',
         taxPercentage: 19,
-        isService: true
+        isService: true,
       })
     }
+
     return items
   }
 
@@ -124,6 +134,7 @@ export default class Smartbill extends ExternalClient {
 
     const { order } = body
     const json = await this.generateJson(order)
+
     const settings = await this.getSettings()
 
     // Create buffer object, specifying utf8 as encoding

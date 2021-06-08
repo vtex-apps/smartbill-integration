@@ -13,7 +13,9 @@ export async function generateInvoice(ctx: any, next: () => Promise<any>) {
 
   const simpleCrypto = new SimpleCrypto(settings.smarbillApiToken)
 
-  const cipherText = simpleCrypto.encrypt(JSON.stringify({ number: response.number }))
+  const cipherText = simpleCrypto.encrypt(
+    JSON.stringify({ number: response.number })
+  )
 
   response.encryptedNumber = Buffer.from(cipherText).toString('base64')
   ctx.status = 200
@@ -34,9 +36,7 @@ export async function showInvoice(ctx: any, next: () => Promise<any>) {
   let plainNumber = simpleCrypto.decrypt(toDecrypt) as any
 
   plainNumber =
-    (typeof plainNumber === 'object')
-      ? plainNumber.number
-      : plainNumber
+    typeof plainNumber === 'object' ? plainNumber.number : plainNumber
 
   const response = await smartbill.showInvoice(plainNumber.toString())
 
