@@ -53,13 +53,18 @@ export default class Smartbill extends ExternalClient {
 
   public static generateProducts(order: any, settings: any) {
     const items = order.items.map((item: any) => {
+      let vatPercent
 
-      let vatPercent = item.priceTags.reduce((result: any, tag: any) => {
-        if (tag.isPercentual) {
-          result = tag.value
-        }
-        return result
-      }, 0)
+      if (settings.useVtexProductTaxValue) {
+        vatPercent = item.priceTags.reduce((result: any, tag: any) => {
+          if (tag.isPercentual) {
+            result = tag.value
+          }
+          return result
+        }, settings.smartbillDefaultVATPercentage)
+      } else {
+        vatPercent = settings.smartbillDefaultVATPercentage
+      }
 
       return {
         code: item.uniqueId,

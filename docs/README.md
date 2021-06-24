@@ -25,6 +25,11 @@ Open the app settings on your admin - "https://your-store-name.myvtex.com/admin/
 - SmartBill API TOKEN
 - SmartBill Vat Code
 - SmartBill Series Name
+- Invoice shipping cost (optional)
+- Shipping cost product name (optional)
+- Shipping cost product code (optional)
+- Use VTEX priceTags (optional)
+- Smartbill default VAT percentage
 
 ## Exposed endpoints
 
