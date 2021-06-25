@@ -94,7 +94,7 @@ export default class Smartbill extends ExternalClient {
         price: order.shippingTotal,
         quantity: 1,
         taxName: 'Normala',
-        taxPercentage: 19,
+        taxPercentage: settings.smartbillDefaultVATPercentage,
         isService: true,
       })
     }
