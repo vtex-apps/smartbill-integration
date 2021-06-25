@@ -77,7 +77,7 @@
         "title": "Smartbill default VAT percentage",
         "description": "Default VAT percentage used if *VTEX priceTags* is not used or not available",
         "type": "string",
-        "default": "19"
+        "default": "0"
       }
     }
   },
