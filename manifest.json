@@ -67,6 +67,17 @@
         "description": "Code of the shipping cost product that will appear on the invoice",
         "type": "string",
         "default": "shipping-tax"
+      },
+      "useVtexProductTaxValue": {
+        "title": "Use VTEX priceTags",
+        "description": "Use VTEX priceTags VAT percentage if available",
+        "type": "boolean"
+      },
+      "smartbillDefaultVATPercentage": {
+        "title": "Smartbill default VAT percentage",
+        "description": "Default VAT percentage used if *VTEX priceTags* is not used or not available",
+        "type": "string",
+        "default": "19"
       }
     }
   },
