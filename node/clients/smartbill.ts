@@ -2,6 +2,7 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { Apps, ExternalClient } from '@vtex/api'
 import { validate } from 'validate.js'
+import constants from '../constants';
 
 export default class Smartbill extends ExternalClient {
   public async generateJson(order: any) {
@@ -13,7 +14,7 @@ export default class Smartbill extends ExternalClient {
     } = order
 
     const clientData: any = {
-      country: 'Romania',
+      country: constants.country,
       email: client.email,
       name: `${client.lastName} ${client.firstName}`,
       address: `${address.street} ${address.number}`,
@@ -70,11 +71,11 @@ export default class Smartbill extends ExternalClient {
         code: item.uniqueId,
         currency: order.storePreferencesData.currencyCode,
         isTaxIncluded: true,
-        measuringUnitName: 'buc',
+        measuringUnitName: constants.measuringUnitName,
         name: item.name,
         price: item.sellingPrice,
         quantity: item.quantity,
-        taxName: 'Normala',
+        taxName: constants.taxName,
         taxPercentage: vatPercent,
       }
     })
@@ -103,7 +104,7 @@ export default class Smartbill extends ExternalClient {
   }
 
   constructor(context: IOContext, options?: InstanceOptions) {
-    super('http://ws.smartbill.ro/SBORO/api', context, options)
+    super(constants.smartbillEndpoint, context, options)
   }
 
   public async getSettings() {
