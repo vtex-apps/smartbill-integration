@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.3.1] - 2021-07-12
+
 ## [1.3.0] - 2021-07-08
 ### Added
 - Added option in config to invoice shipping cost
