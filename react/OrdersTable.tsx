@@ -63,10 +63,6 @@ const initialState = {
   f_orderDate: null,
   async: [],
   tableIsLoading: true,
-  bulkActions: 0,
-  bulkActionsProcessed: 0,
-  awbAutoUpdateEnabled: false,
-  awbAutoUpdateLoading: false,
 }
 
 class OrdersTable extends Component<any, any> {
@@ -87,133 +83,6 @@ class OrdersTable extends Component<any, any> {
     this.filterStatus = this.filterStatus.bind(this)
     this.filterOrderDate = this.filterOrderDate.bind(this)
     this.handleResetFilters = this.handleResetFilters.bind(this)
-
-    this.updateAWB = this.updateAWB.bind(this)
-    this.getAWBHistory = this.getAWBHistory.bind(this)
-    this.updateAWBStatus = this.updateAWBStatus.bind(this)
-  }
-
-  updateAWBStatus(data) {
-    if (
-      data.length &&
-      data[0].hasOwnProperty('history') &&
-      data[0].hasOwnProperty('invoiceNumber')
-    ) {
-      const { history } = data[0]
-      const { invoiceNumber } = data[0]
-      const { orderId } = data[0]
-
-      const events = history.map(event => {
-        return {
-          description: event.clientStatusDescription,
-          date: event.eventDate,
-        }
-      })
-
-      const payload = {
-        events,
-      }
-
-      try {
-        fetch(
-          `/api/oms/pvt/orders/${orderId}/invoice/${invoiceNumber}/tracking`,
-          {
-            method: 'PUT',
-            body: JSON.stringify(payload),
-            headers: requestHeaders,
-          }
-        )
-          .then(res => res.json())
-          .then(() => {
-            this.setState(
-              prevState => {
-                return {
-                  bulkActionsProcessed: prevState.bulkActionsProcessed + 1,
-                }
-              },
-              () => {
-                if (
-                  this.state.bulkActions === this.state.bulkActionsProcessed
-                ) {
-                  this.setState(
-                    { bulkActions: 0, bulkActionsProcessed: 0 },
-                    () => this.getItems()
-                  )
-                }
-              }
-            )
-          })
-      } catch (err) {
-        this.setState({ posted: false })
-      }
-    } else {
-      this.setState({ posted: false })
-    }
-  }
-
-  getAWBHistory(order) {
-    const { courier, trackingNumber, invoiceNumber, orderId } = order
-
-    if (!courier || !trackingNumber || !invoiceNumber) {
-      this.setState(
-        prevState => {
-          return { bulkActionsProcessed: prevState.bulkActionsProcessed + 1 }
-        },
-        () => {
-          if (this.state.bulkActions === this.state.bulkActionsProcessed) {
-            this.setState({ bulkActions: 0, bulkActionsProcessed: 0 }, () =>
-              this.getItems()
-            )
-          }
-        }
-      )
-
-      return
-    }
-
-    const payload = {
-      courier,
-      awbList: [trackingNumber],
-    }
-
-    try {
-      fetch('/innoship/request-awb-history', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: {
-          ...requestHeaders,
-          'X-Vtex-Use-Https': 'true',
-        },
-      })
-        .then(res => res.json())
-        .then(json => {
-          if (!json.hasOwnProperty('response')) {
-            if (json.length) {
-              json[0].invoiceNumber = invoiceNumber
-              json[0].orderId = orderId
-              this.updateAWBStatus(json)
-            }
-          }
-        })
-    } catch (err) {
-      this.setState({ posted: false })
-    }
-  }
-
-  updateAWB(rows) {
-    if (this.state.items.length === 0) {
-      return
-    }
-
-    this.setState({
-      bulkActions: rows.selectedRows.length,
-      tableIsLoading: true,
-      items: [],
-    })
-
-    rows.selectedRows.map(row => {
-      this.getAWBHistory(row)
-    })
   }
 
   handleResetFilters() {
@@ -328,7 +197,6 @@ class OrdersTable extends Component<any, any> {
       url += `&q=${searchValue}`
     }
 
-    console.log(url)
     try {
       fetch(url, {
         headers: requestHeaders,
@@ -596,18 +464,6 @@ class OrdersTable extends Component<any, any> {
             currentItemFrom: this.state.currentItemFrom,
             currentItemTo: this.state.currentItemTo,
             totalItems: paging.total,
-          }}
-          bulkActions={{
-            texts: {
-              secondaryActionsLabel: formatMessage({ id: messages.actions.id }),
-              rowsSelected: qty => (
-                <React.Fragment>Selected rows: {qty}</React.Fragment>
-              ),
-            },
-            main: {
-              label: formatMessage({ id: messages.updateAwbStatus.id }),
-              handleCallback: params => this.updateAWB(params),
-            },
           }}
         />
       </div>
