@@ -1,0 +1,15 @@
+{
+  "admin/smartbill.navigation.label": "Smartbill",
+  "admin/order.total": "Total",
+  "admin/order.date": "Data comanda",
+  "admin/order.receiver": "Destinatar",
+  "admin/order.customer": "Client",
+  "admin/order.payment": "Plata",
+  "admin/order.status": "Status",
+  "admin/order.search-by": "Cautati numarul comenzii, clientul, plata",
+  "admin/order.filter-status": "Filtreaza dupa status",
+  "admin/order.clear-filters": "Resetati",
+  "admin/order.status.invoiced": "Facturat",
+  "admin/order.status.handling": "Procesare",
+  "admin/order.of": "din"
+}

@@ -1,0 +1,10 @@
+{
+  "admin.app.shipping": {
+    "component": "OrdersList",
+    "path": "/admin/app/smartbill/order-list"
+  },
+  "admin.app.shipping-order": {
+    "component": "SmartbillOrderDetails",
+    "path": "/admin/app/smartbill/order/:id"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "admin/smartbill.navigation.label": "admin/smartbill.navigation.label",
+  "admin/order.total": "admin/order.total",
+  "admin/order.date": "admin/order.date",
+  "admin/order.receiver": "admin/order.receiver",
+  "admin/order.customer": "admin/order.customer",
+  "admin/order.payment": "admin/order.payment",
+  "admin/order.status": "admin/order.status",
+  "admin/order.search-by": "admin/order.search-by",
+  "admin/order.filter-status": "admin/order.filter-status",
+  "admin/order.clear-filters": "admin/order.clear-filters",
+  "admin/order.status.invoiced": "admin/order.status.invoiced",
+  "admin/order.status.handling": "admin/order.status.handling",
+  "admin/order.of": "admin/order.of"
+}

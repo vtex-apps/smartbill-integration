@@ -1,0 +1,15 @@
+{
+  "admin/smartbill.navigation.label": "Smartbill",
+  "admin/order.total": "Total",
+  "admin/order.date": "Order date",
+  "admin/order.receiver": "Receiver",
+  "admin/order.customer": "Customer",
+  "admin/order.payment": "Payment",
+  "admin/order.status": "Status",
+  "admin/order.search-by": "Search Order #, Customer, Payment",
+  "admin/order.filter-status": "Filter Status",
+  "admin/order.clear-filters": "Clear Filters",
+  "admin/order.status.invoiced": "Invoiced",
+  "admin/order.status.handling": "Handling",
+  "admin/order.of": "of"
+}
