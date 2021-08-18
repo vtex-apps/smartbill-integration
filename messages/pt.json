@@ -11,5 +11,6 @@
   "admin/order.clear-filters": "Clear Filters",
   "admin/order.status.invoiced": "Invoiced",
   "admin/order.status.handling": "Handling",
-  "admin/order.of": "of"
+  "admin/order.of": "of",
+  "admin/order.invoice-link": "Invoice link"
 }

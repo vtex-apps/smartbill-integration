@@ -36,14 +36,11 @@ const messages = defineMessages({
   invoiced: { id: 'admin/order.status.invoiced' },
   canceled: { id: 'admin/order.status.canceled' },
   windowToCancel: { id: 'admin/order.status.window-to-cancel' },
-  offAutoUpdate: { id: 'admin/order.turn-off-auto-update' },
-  onAutoUpdate: { id: 'admin/order.turn-on-auto-update' },
   clearFilters: { id: 'admin/order.clear-filters' },
   filterStatus: { id: 'admin/order.filter-status' },
   showRows: { id: 'admin/order.show-rows' },
   of: { id: 'admin/order.of' },
-  actions: { id: 'admin/order.actions' },
-  updateAwbStatus: { id: 'admin/order.update-awb-status' },
+  invoiceLink: { id: 'admin/order.invoice-link' },
 })
 
 const initialState = {
@@ -356,7 +353,7 @@ class OrdersTable extends Component<any, any> {
           },
         },
         invoiceLink: {
-          title: 'Invoice link',
+          title: formatMessage({ id: messages.invoiceLink.id }),
           cellRenderer: ({ rowData }) => {
             const data = this.state.async.filter(function(item) {
               return item.orderId === rowData.orderId

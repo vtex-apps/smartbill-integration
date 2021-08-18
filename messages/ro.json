@@ -11,5 +11,6 @@
   "admin/order.clear-filters": "Resetati",
   "admin/order.status.invoiced": "Facturat",
   "admin/order.status.handling": "Procesare",
-  "admin/order.of": "din"
+  "admin/order.of": "din",
+  "admin/order.invoice-link": "Link factura"
 }
