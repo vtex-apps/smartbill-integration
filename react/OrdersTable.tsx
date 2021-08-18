@@ -6,7 +6,7 @@ import {
   Tag,
   Spinner,
   DatePicker,
-  Input,
+  Link,
 } from 'vtex.styleguide'
 import { FormattedCurrency } from 'vtex.format-currency'
 import PropTypes from 'prop-types'
@@ -14,7 +14,7 @@ import { defineMessages, FormattedMessage } from 'react-intl'
 
 import settings from './settings'
 import styles from './style.css'
-import { canceledStatus, requestHeaders } from './utils/constants'
+import { requestHeaders } from './utils/constants'
 
 function FormattedMessageFixed(props) {
   return <FormattedMessage {...props} />
@@ -314,6 +314,7 @@ class OrdersTable extends Component<any, any> {
 
     if (f_orderDate !== null) {
       const date = f_orderDate.toLocaleDateString('fr-CA')
+
       url += `&f_creationDate=creationDate:[${date}T00:00:00.000Z TO ${date}T23:59:59.999Z]`
     }
 
@@ -354,6 +355,7 @@ class OrdersTable extends Component<any, any> {
                 let trackingNumber = null
                 const courier = null
                 let invoiceNumber = null
+                let invoiceUrl = null
 
                 if (json.packageAttachment.packages.length) {
                   const packageItem = json.packageAttachment.packages[0]
@@ -367,6 +369,7 @@ class OrdersTable extends Component<any, any> {
 
                   invoiceNumber = packageItem.invoiceNumber ?? null
                   trackingNumber = packageItem.trackingNumber ?? null
+                  invoiceUrl = packageItem.invoiceUrl ?? null
 
                   if (
                     packageItem.courierStatus &&
@@ -397,6 +400,7 @@ class OrdersTable extends Component<any, any> {
                   items[orderIndex].trackingNumber = trackingNumber
                   items[orderIndex].courier = courier
                   items[orderIndex].invoiceNumber = invoiceNumber
+                  items[orderIndex].invoiceUrl = invoiceUrl
                 }
 
                 async.push({
@@ -404,6 +408,7 @@ class OrdersTable extends Component<any, any> {
                   shipping,
                   notShipped,
                   awbStatus,
+                  invoiceUrl,
                 })
               })
           })
@@ -477,6 +482,28 @@ class OrdersTable extends Component<any, any> {
                   {extraMessage}
                 </Tag>
               )
+            }
+
+            return <Spinner size={15} />
+          },
+        },
+        invoiceLink: {
+          title: 'Invoice link',
+          cellRenderer: ({ rowData }) => {
+            const data = this.state.async.filter(function(item) {
+              return item.orderId === rowData.orderId
+            })
+
+            if (data.length) {
+              if (data[0].invoiceUrl) {
+                return (
+                  <Link target="_blank" href={data[0].invoiceUrl}>
+                    link
+                  </Link>
+                )
+              }
+
+              return null
             }
 
             return <Spinner size={15} />
