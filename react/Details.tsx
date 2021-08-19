@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import OrderDetails from './OrderDetails'
 import styles from './style.css'
+import OrderLog from './OrderLog'
+import InvoiceDetails from './InvoiceDetails'
 
 export default class Details extends Component<any, any> {
   static propTypes = {
@@ -171,18 +173,18 @@ export default class Details extends Component<any, any> {
           />
         </div>
         <div className={`flex flex-column ${styles.flex04}`}>
-          {/* <InvoiceDetails */}
-          {/*  logError={this.logOrderError} */}
-          {/*  order={this.state.order} */}
-          {/*  intl={this.props.intl} */}
-          {/* /> */}
-          {/* <OrderLog */}
-          {/*  log={log} */}
-          {/*  tableIsLoading={tableIsLoading} */}
-          {/*  getLogItems={this.getLogItems} */}
-          {/*  order={this.state.order} */}
-          {/*  intl={this.props.intl} */}
-          {/* /> */}
+          <InvoiceDetails
+            logError={this.logOrderError}
+            order={this.state.order}
+            intl={this.props.intl}
+          />
+          <OrderLog
+            log={log}
+            tableIsLoading={tableIsLoading}
+            getLogItems={this.getLogItems}
+            order={this.state.order}
+            intl={this.props.intl}
+          />
         </div>
       </div>
     )
