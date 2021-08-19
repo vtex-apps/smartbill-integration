@@ -62,6 +62,4 @@ GET - /smartbill/show-invoice/:encryptedInvoiceNumber (https://ws.smartbill.ro/S
 
 ## Important
 
-### This app is not supposed to be used as a standalone app, the endpoints should be consumed by other apps (e.g. vtex.innoship)
-
 > **_NOTE:_** The secret key used to encrypt the invoice number is the Smartbill Token, if the token is changed the previously generated invoices will not be able to decrypt the invoice number. All invoice urls will not show the pdf.

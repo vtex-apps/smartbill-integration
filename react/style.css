@@ -1,0 +1,48 @@
+.tableHeaderButtons {
+  position: absolute;
+  right: 4em;
+}
+
+.shippingInformationHolder {
+  padding: 5px 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.corporateInformationHolder {
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bold { font-weight: 600; }
+.height6 {height: 6rem;}
+.height25 { height: 2.5rem; }
+.fontSmall {font-size: 0.7rem;}
+
+.justifyCenter { justify-content: center; }
+.flex1 { flex: 1}
+.flex01 { flex: 0.1}
+.flex02 { flex: 0.2}
+.flex03 { flex: 0.3}
+.flex04 { flex: 0.4}
+.flex05 { flex: 0.5}
+.flex06 { flex: 0.6}
+.flex07 { flex: 0.7}
+.flex08 { flex: 0.8}
+
+.orderDetailsCard {
+  padding: 0;
+  color: #585959;
+  background: #fafafa;
+}
+
+.productSpec { padding: 2px 23px }
+.productInfo { padding: 2px 10px; }
+.orderDetailsTotals {
+  padding: 15px 60px;
+}
+.shippingInfoTitle { padding: 5px 10px;}
+.shippingInfoText { padding: 0 10px;}
+.textCenter {text-align: center;}
+.parcelImage { width: 150px; }
