@@ -49,12 +49,36 @@ export default class Details extends Component<any, any> {
     }
   }
 
+  async initMasterData() {
+    const logSchema = {
+      properties: {
+        orderId: { type: 'string' },
+        data: { type: 'object' },
+        type: { type: 'string' },
+      },
+      'v-indexed': ['orderId', 'type'],
+      'v-default-fields': ['id', 'orderId', 'data', 'createdIn', 'type'],
+      'v-cache': false,
+    }
+
+    return await fetch(`/api/dataentities/vtex_smartbill/schemas/default`, {
+      method: 'PUT',
+      body: JSON.stringify(logSchema),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+  }
+
   getLogItems = async () => {
     const { order } = this.state
 
+    await this.initMasterData()
+
     try {
       const logItemsResponse = await fetch(
-        `/api/dataentities/vtex_innoship/search?_fields=id,orderId,data,createdIn,type&_sort=createdIn DESC&orderId=${order.orderId}&type=error-log&_size=100`,
+        `/api/dataentities/vtex_smartbill/search?_fields=id,orderId,data,createdIn,type&_sort=createdIn DESC&orderId=${order.orderId}&type=error-log&_size=100`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -72,7 +96,7 @@ export default class Details extends Component<any, any> {
     }
   }
 
-  logOrderError = (errors, source = 'innoship-errors') => {
+  logOrderError = (errors, source = 'smartbill-errors') => {
     let message
 
     if (errors.hasOwnProperty('message')) {
@@ -108,27 +132,9 @@ export default class Details extends Component<any, any> {
       }
 
       try {
-        const logSchema = {
-          properties: {
-            orderId: { type: 'string' },
-            data: { type: 'object' },
-            type: { type: 'string' },
-          },
-          'v-indexed': ['orderId', 'type'],
-          'v-default-fields': ['id', 'orderId', 'data', 'createdIn', 'type'],
-          'v-cache': false,
-        }
-
-        fetch(`/api/dataentities/vtex_innoship/schemas/default`, {
-          method: 'PUT',
-          body: JSON.stringify(logSchema),
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-        }).then(() => {
+        this.initMasterData().then(() => {
           try {
-            fetch(`/api/dataentities/vtex_innoship/documents`, {
+            fetch(`/api/dataentities/vtex_smartbill/documents`, {
               method: 'POST',
               body: JSON.stringify({
                 orderId: order.orderId,

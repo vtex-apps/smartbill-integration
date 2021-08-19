@@ -168,9 +168,9 @@ export default class InvoiceDetails extends Component<any, any> {
           })
         })
     } catch (err) {
-      const errors = { innoship: [err] }
+      const errors = { smartbill: [err] }
 
-      this.props.logError(errors, 'innoship-errors')
+      this.props.logError(errors, 'smartbill-errors')
       this.setState({ errors, modalOpen: true, isLoading: false })
     }
   }
@@ -237,9 +237,9 @@ export default class InvoiceDetails extends Component<any, any> {
           }, 2000)
         })
       } catch (err) {
-        const errors = { innoship: [err] }
+        const errors = { smartbill: [err] }
 
-        this.props.logError(errors, 'innoship-errors')
+        this.props.logError(errors, 'smartbill-errors')
         this.setState({ errors, modalOpen: true, isLoading: false })
       }
     }
