@@ -24,6 +24,7 @@
   "admin/order.gift-card": "Gift card",
   "admin/order.total-order-value": "Total Order Value",
   "admin/order.shipping-information": "Shipping Information",
+  "admin/order.invoicing-information": "Invoicing Information",
   "admin/order.see-order-details": "See Order Details",
   "admin/order.client": "Client",
   "admin/order.phone": "Phone",

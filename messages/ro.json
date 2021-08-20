@@ -24,6 +24,7 @@
   "admin/order.gift-card": "Card cadou",
   "admin/order.total-order-value": "Valoare totala comanda",
   "admin/order.shipping-information": "Informatii livrare",
+  "admin/order.invoicing-information": "Informatii facturare",
   "admin/order.see-order-details": "Vezi detalii comanda",
   "admin/order.client": "Client",
   "admin/order.phone": "Telefon",

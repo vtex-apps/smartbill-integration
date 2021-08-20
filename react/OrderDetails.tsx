@@ -38,6 +38,7 @@ const messages = defineMessages({
   giftCard: { id: 'admin/order.gift-card' },
   totalOrderValue: { id: 'admin/order.total-order-value' },
   shippingInformation: { id: 'admin/order.shipping-information' },
+  invoicingInformation: { id: 'admin/order.invoicing-information' },
   client: { id: 'admin/order.client' },
   phone: { id: 'admin/order.phone' },
   shippingStatus: { id: 'admin/order.shipping-status' },
@@ -509,7 +510,7 @@ class OrderDetails extends Component<any, any> {
                     <span
                       className={`${styles.shippingInfoTitle} ${styles.bold}`}
                     >
-                      {formatMessage({ id: messages.shippingInformation.id })}
+                      {formatMessage({ id: messages.invoicingInformation.id })}
                     </span>
                     <span className={`${styles.shippingInfoText}`}>
                       {formatMessage({ id: messages.client.id })}
