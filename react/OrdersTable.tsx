@@ -362,9 +362,15 @@ class OrdersTable extends Component<any, any> {
             if (data.length) {
               if (data[0].invoiceUrl) {
                 return (
-                  <Link target="_blank" href={data[0].invoiceUrl}>
-                    link
-                  </Link>
+                  <div
+                    onClick={e => {
+                      e.stopPropagation()
+                    }}
+                  >
+                    <Link target="_blank" href={data[0].invoiceUrl}>
+                      link
+                    </Link>
+                  </div>
                 )
               }
 
