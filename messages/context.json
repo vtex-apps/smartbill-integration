@@ -44,5 +44,15 @@
   "admin/order.message": "admin/order.message",
   "admin/order.error-log": "admin/order.error-log",
   "admin/order.invoice-url": "admin/order.invoice-url",
-  "admin/order.details": "admin/order.details"
+  "admin/order.details": "admin/order.details",
+  "admin/order.status.waiting-for-sellers-confirmation": "admin/order.status.waiting-for-sellers-confirmation",
+  "admin/order.status.payment-pending": "admin/order.status.payment-pending",
+  "admin/order.status.payment-approved": "admin/order.status.payment-approved",
+  "admin/order.status.ready-for-handling": "admin/order.status.ready-for-handling",
+  "admin/order.status.canceled": "admin/order.status.canceled",
+  "admin/order.status.window-to-cancel": "admin/order.status.window-to-cancel",
+  "admin/order.status.waiting-ffmt-authorization": "admin/order.status.waiting-ffmt-authorization",
+  "admin/order.status.on-order-completed-ffm": "admin/order.status.on-order-completed-ffm",
+  "admin/order.status.order-accepted": "admin/order.status.order-accepted",
+  "admin/order.status.cancellation-requested": "admin/order.status.cancellation-requested"
 }

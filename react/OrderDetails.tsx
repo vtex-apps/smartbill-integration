@@ -3,6 +3,7 @@ import { Box, Button, Card, Collapsible, Modal, Tag } from 'vtex.styleguide'
 import { FormattedCurrency } from 'vtex.format-currency'
 import PropTypes from 'prop-types'
 import { defineMessages, FormattedMessage } from 'react-intl'
+import axios from 'axios'
 
 import settings from './settings'
 import styles from './style.css'
@@ -217,6 +218,36 @@ class OrderDetails extends Component<any, any> {
     this.setState({ modalOpen: false, errors: {}, error: {}, posted: false })
   }
 
+  changeState(newState) {
+    this.setState({ posted: true })
+    try {
+      const { order } = this.state
+
+      axios
+        .post(`/api/oms/pvt/orders/${order.orderId}/changestate/${newState}`)
+        .then(() => {
+          window.location.reload()
+        })
+    } catch (err) {
+      this.setState({ posted: false })
+    }
+  }
+
+  handleOrder() {
+    this.setState({ posted: true })
+    try {
+      const { order } = this.state
+
+      axios
+        .post(`/api/oms/pvt/orders/${order.orderId}/start-handling`)
+        .then(() => {
+          window.location.reload()
+        })
+    } catch (err) {
+      this.setState({ posted: false })
+    }
+  }
+
   public render() {
     const {
       order,
@@ -305,16 +336,40 @@ class OrderDetails extends Component<any, any> {
       const tagColor =
         order.status === settings.constants.invoiced ? 'blue' : 'green'
 
-      button = (
-        <Button
-          target="_blank"
-          href={`/admin/checkout/#/orders/${order.orderId}`}
-          variation="primary"
-          block
-        >
-          {formatMessage({ id: messages.seeOrderDetails.id })}
-        </Button>
-      )
+      if (order.status === settings.constants.window_to_cancel) {
+        button = (
+          <Button
+            onClick={() => this.changeState('ready-for-handling')}
+            isLoading={this.state.posted}
+            variation="primary"
+            block
+          >
+            Ready to handle
+          </Button>
+        )
+      } else if (order.status === settings.constants.ready_for_handling) {
+        button = (
+          <Button
+            onClick={() => this.handleOrder()}
+            isLoading={this.state.posted}
+            variation="primary"
+            block
+          >
+            Start handling
+          </Button>
+        )
+      } else if (order.status === settings.constants.invoiced) {
+        button = (
+          <Button
+            target="_blank"
+            href={`/admin/checkout/#/orders/${order.orderId}`}
+            variation="primary"
+            block
+          >
+            {formatMessage({ id: messages.seeOrderDetails.id })}
+          </Button>
+        )
+      }
 
       return (
         <div className={`pa6 ${styles.flex05}`}>

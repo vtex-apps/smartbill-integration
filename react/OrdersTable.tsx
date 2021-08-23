@@ -187,7 +187,7 @@ class OrdersTable extends Component<any, any> {
     if (f_status !== null) {
       url += `&f_status=${f_status}`
     } else {
-      url += `&f_status=handling,invoiced`
+      url += `&f_status=ready-for-handling,handling,invoiced,canceled,waiting-ffmt-authorization,payment-pending,on-order-completed-ffm,order-accepted,window-to-cancel`
     }
 
     if (searchValue !== '') {
@@ -389,18 +389,47 @@ class OrdersTable extends Component<any, any> {
 
     return [
       {
-        label: formatMessage({ id: messages.handling.id }),
+        label: (
+          <FormattedMessage id="admin/order.status.waiting-ffmt-authorization" />
+        ),
+        onClick: () =>
+          this.filterStatus(
+            'waiting-ffmt-authorization,on-order-completed-ffm,order-accepted'
+          ),
+      },
+      {
+        label: <FormattedMessage id="admin/order.status.payment-pending" />,
+        onClick: () => this.filterStatus('payment-pending'),
+      },
+      {
+        label: <FormattedMessage id="admin/order.status.payment-approved" />,
+        onClick: () => this.filterStatus('payment-approved'),
+      },
+      {
+        label: <FormattedMessage id="admin/order.status.ready-for-handling" />,
+        onClick: () => this.filterStatus('ready-for-handling'),
+      },
+      {
+        label: <FormattedMessage id="admin/order.status.handling" />,
         onClick: () => this.filterStatus('handling'),
       },
       {
-        label: formatMessage({ id: messages.invoiced.id }),
+        label: <FormattedMessage id="admin/order.status.invoiced" />,
         onClick: () => this.filterStatus('invoiced'),
+      },
+      {
+        label: <FormattedMessage id="admin/order.status.canceled" />,
+        onClick: () => this.filterStatus('canceled'),
+      },
+      {
+        label: <FormattedMessage id="admin/order.status.window-to-cancel" />,
+        onClick: () => this.filterStatus('window-to-cancel'),
       },
     ]
   }
 
   public render() {
-    const { paging, awbAutoUpdateEnabled, awbAutoUpdateLoading } = this.state
+    const { paging } = this.state
     const { formatMessage } = this.props.intl
 
     return (

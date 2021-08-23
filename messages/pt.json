@@ -45,5 +45,15 @@
   "admin/order.message": "Message",
   "admin/order.error-log": "Error Log",
   "admin/order.invoice-url": "Invoice URL",
-  "admin/order.details": "Details"
+  "admin/order.details": "Details",
+  "admin/order.status.waiting-for-sellers-confirmation": "Waiting For Sellers Confirmation",
+  "admin/order.status.payment-pending": "Payment Pending",
+  "admin/order.status.payment-approved": "Payment Approved",
+  "admin/order.status.ready-for-handling": "Ready for Handling",
+  "admin/order.status.canceled": "Canceled",
+  "admin/order.status.window-to-cancel": "Window To Cancel",
+  "admin/order.status.waiting-ffmt-authorization": "Waiting for Authorization",
+  "admin/order.status.on-order-completed-ffm": "Waiting for Authorization",
+  "admin/order.status.order-accepted":  "Waiting for Authorization",
+  "admin/order.status.cancellation-requested":  "Cancellation Requested"
 }

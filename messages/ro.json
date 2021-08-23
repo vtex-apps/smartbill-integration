@@ -45,5 +45,15 @@
   "admin/order.message": "Mesaj",
   "admin/order.error-log": "Jurnal de erori",
   "admin/order.invoice-url": "URL Factura",
-  "admin/order.details": "Detalii"
+  "admin/order.details": "Detalii",
+  "admin/order.status.waiting-for-sellers-confirmation": "Asteptare confirmare vanzare",
+  "admin/order.status.payment-pending": "Plata in asteptare",
+  "admin/order.status.payment-approved": "Plata aprobata",
+  "admin/order.status.ready-for-handling": "Gata pentru procesare",
+  "admin/order.status.canceled": "Anulata",
+  "admin/order.status.window-to-cancel": "Fereastra de anulare",
+  "admin/order.status.waiting-ffmt-authorization": "Waiting for Authorization",
+  "admin/order.status.on-order-completed-ffm": "Waiting for Authorization",
+  "admin/order.status.order-accepted":  "Waiting for Authorization",
+  "admin/order.status.cancellation-requested":  "Cancellation Requested"
 }
