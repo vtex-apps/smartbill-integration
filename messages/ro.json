@@ -34,7 +34,7 @@
   "admin/order.error-required": "Campul este obligatoriu!",
   "admin/order.error-whitespace": "Nu trebuie sa contina spatii!",
   "admin/order.error-slashes": "Nu trebuie sa contina slash-uri!",
-  "admin/order.save": "Generaza",
+  "admin/order.save": "Genereaza",
   "admin/order.close": "Inchide",
   "admin/order.errors": "ERORI",
   "admin/order.status.invoice": "Factura fiscala",

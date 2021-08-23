@@ -306,15 +306,17 @@ export default class InvoiceDetails extends Component<any, any> {
     }
 
     return (
-      <div className={`mb5 mt5 ${styles.textCenter}`}>
-        <Button
-          onClick={() => this.handleInvoice()}
-          isLoading={this.state.isLoading}
-          variation="primary"
-          block
-        >
-          {formatMessage({ id: messages.save.id })}
-        </Button>
+      <div className={`mb5 mt5 flex flex-row`}>
+        <div className={`${styles.textCenter} ${styles.flex07}`}>
+          <Button
+            onClick={() => this.handleInvoice()}
+            isLoading={this.state.isLoading}
+            variation="primary"
+            block
+          >
+            {formatMessage({ id: messages.save.id })}
+          </Button>
+        </div>
       </div>
     )
   }
