@@ -12,6 +12,14 @@
     "showInvoice": {
       "path": "/smartbill/show-invoice/:invoiceNumber",
       "public": true
+    },
+    "getSkuById": {
+      "path": "/catalog/stockkeepingunit/:skuId",
+      "public": true
+    },
+    "getProductVariation": {
+      "path": "/catalog/product-variation/:productId",
+      "public": true
     }
   }
 }
