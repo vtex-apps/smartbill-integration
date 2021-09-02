@@ -182,7 +182,94 @@ export default class InvoiceDetails extends Component<any, any> {
     )
 
     if (response.status === 200) {
-      this.setState({ order: response.data })
+      this.setState({ order: response.data }, () => {
+        if (order.changesAttachment) {
+          order.changesAttachment.changesData.map(item => {
+            if (item.itemsAdded.length) {
+              item.itemsAdded.map(added => {
+                const existingProduct = order.items.filter(item => {
+                  return item.id === added.id
+                })
+
+                if (!existingProduct.length) {
+                  fetch(`/catalog/stockkeepingunit/${added.id}`)
+                    .then(resp => resp.json())
+                    .then(async json => {
+                      let imageUrl = ''
+
+                      const variations = await fetch(
+                        `/catalog/product-variation/${json.ProductId}`
+                      ).then(response => response.json())
+
+                      const existingSku = variations.skus.filter(sku => {
+                        return sku.sku == added.id
+                      })
+
+                      if (existingSku.length) {
+                        imageUrl = existingSku[0].image
+                      }
+
+                      order.items.push({
+                        uniqueId: json.RefId,
+                        name: json.Name,
+                        refId: json.RefId,
+                        productId: json.ProductId,
+                        id: json.Id,
+                        additionalInfo: {
+                          dimension: {
+                            cubicweight: json.CubicWeight,
+                            weight: json.WeightKg,
+                            height: json.Height,
+                            length: json.Length,
+                            width: json.Width,
+                          },
+                        },
+                        measurementUnit: json.MeasurementUnit,
+                        tax: 0,
+                        price: added.price,
+                        listPrice: added.price,
+                        sellingPrice: added.price,
+                        quantity: added.quantity,
+                        imageUrl,
+                        unitMultiplier: added.unitMultiplier,
+                        priceTags: [],
+                      })
+                    })
+                } else {
+                  const index = order.items.indexOf(existingProduct[0])
+
+                  if (index !== -1) {
+                    order.items[index].quantity += added.quantity
+                  }
+                }
+              })
+            }
+
+            if (item.itemsRemoved.length) {
+              item.itemsRemoved.map(removed => {
+                const existingRemovedProduct = order.items.filter(item => {
+                  return item.id === removed.id
+                })
+
+                if (existingRemovedProduct.length) {
+                  if (
+                    existingRemovedProduct[0].quantity - removed.quantity ==
+                    0
+                  ) {
+                    const index = order.items.indexOf(existingRemovedProduct[0])
+
+                    if (index !== -1) {
+                      order.items.splice(index, 1)
+                    }
+                  }
+                }
+              })
+            }
+          })
+
+          this.setState({ order })
+        }
+      })
     }
   }
 
