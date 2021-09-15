@@ -1,0 +1,25 @@
+{
+  "memory": 256,
+  "ttl": 10,
+  "timeout": 5000,
+  "minReplicas": 2,
+  "maxReplicas": 4,
+  "routes": {
+    "generateInvoice": {
+      "path": "/smartbill/generate-invoice",
+      "public": true
+    },
+    "showInvoice": {
+      "path": "/smartbill/show-invoice/:invoiceNumber",
+      "public": true
+    },
+    "getSkuById": {
+      "path": "/catalog/stockkeepingunit/:skuId",
+      "public": true
+    },
+    "getProductVariation": {
+      "path": "/catalog/product-variation/:productId",
+      "public": true
+    }
+  }
+}
