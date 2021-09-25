@@ -20,6 +20,21 @@
     "getProductVariation": {
       "path": "/catalog/product-variation/:productId",
       "public": true
+    },
+    "saveInvoice": {
+      "path": "/smartbill/save-invoice/:orderId",
+      "public": true,
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": [
+            "post"
+          ],
+          "principals": [
+            "vrn:*:*:*:*:*"
+          ]
+        }
+      ]
     }
   }
 }

@@ -24,4 +24,15 @@ export default class CatalogApi extends ExternalClient {
       }
     )
   }
+
+  public async getSkuId(ctx: any, skuId: any): Promise<any> {
+    return this.http.get(
+      `http://${ctx.vtex.account}.vtexcommerstable.com.br/api/catalog/pvt/stockkeepingunit/${skuId}`,
+      {
+        headers: {
+          VtexIdclientAutCookie: ctx.vtex.authToken,
+        },
+      }
+    )
+  }
 }

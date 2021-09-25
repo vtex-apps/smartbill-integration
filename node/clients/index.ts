@@ -2,6 +2,7 @@ import { IOClients } from '@vtex/api'
 import { Catalog } from '@vtex/clients'
 
 import CatalogApi from './catalog'
+import Oms from './oms'
 import Smartbill from './smartbill'
 
 // Extend the default IOClients implementation with our own custom clients.
@@ -16,5 +17,9 @@ export class Clients extends IOClients {
 
   public get catalogApi() {
     return this.getOrSet('catalogApi', CatalogApi)
+  }
+
+  public get oms() {
+    return this.getOrSet('oms', Oms)
   }
 }
