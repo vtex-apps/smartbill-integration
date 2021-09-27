@@ -15,7 +15,6 @@ const withAuthToken = (options: InstanceOptions | undefined) => ({
     ...options?.headers,
     ...(adminUserAuthToken
       ? {
-          Authorization: adminUserAuthToken,
           VtexIdclientAutCookie: adminUserAuthToken,
         }
       : { VtexIdclientAutCookie: authToken }),
