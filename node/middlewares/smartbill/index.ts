@@ -41,7 +41,7 @@ export async function showInvoice(ctx: any, next: () => Promise<any>) {
 export async function processChanges(ctx: any, item: any, order: any) {
   if (item?.itemsAdded.length) {
     item.itemsAdded.map(async (added: any) => {
-      const existingProduct = order?.items.filter((it: any) => {
+      const existingProduct = order?.items?.filter((it: any) => {
         return it.id === added.id
       })
       let imageUrl = ''
@@ -55,7 +55,7 @@ export async function processChanges(ctx: any, item: any, order: any) {
         }
         order.items.push(mapItems(sku, added, imageUrl))
       } else {
-        const index = order.items.indexOf(existingProduct[0])
+        const index = order?.items?.indexOf(existingProduct[0])
         if (index !== -1) {
           order.items[index].quantity += added.quantity
         }
