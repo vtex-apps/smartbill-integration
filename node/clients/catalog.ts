@@ -10,29 +10,20 @@ export default class CatalogApi extends ExternalClient {
         // tslint:disable-next-line:object-literal-sort-keys
         Accept: 'application/json',
         'X-Vtex-Use-Https': 'true',
+        VtexIdclientAutCookie: context.authToken,
       },
     })
   }
 
   public async getProductVariations(ctx: any, productId: any): Promise<any> {
     return this.http.get(
-      `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/catalog_system/pub/products/variations/${productId}`,
-      {
-        headers: {
-          VtexIdclientAutCookie: ctx.vtex.authToken,
-        },
-      }
+      `http://${ctx.vtex.account}.vtexcommercestable.com.br/api/catalog_system/pub/products/variations/${productId}`
     )
   }
 
   public async getSkuId(ctx: any, skuId: any): Promise<any> {
     return this.http.get(
-      `http://${ctx.vtex.account}.vtexcommerstable.com.br/api/catalog/pvt/stockkeepingunit/${skuId}`,
-      {
-        headers: {
-          VtexIdclientAutCookie: ctx.vtex.authToken,
-        },
-      }
+      `http://${ctx.vtex.account}.vtexcommerstable.com.br/api/catalog/pvt/stockkeepingunit/${skuId}`
     )
   }
 }

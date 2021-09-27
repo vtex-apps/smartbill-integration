@@ -13,11 +13,9 @@ const withAuthToken = (options: InstanceOptions | undefined) => ({
 }: IOContext) => {
   return {
     ...options?.headers,
-    ...(adminUserAuthToken
-      ? {
-          VtexIdclientAutCookie: adminUserAuthToken,
-        }
-      : { VtexIdclientAutCookie: authToken }),
+    ...{
+      VtexIdclientAutCookie: adminUserAuthToken || authToken,
+    },
     'X-Vtex-Use-Https': 'true',
     'Content-Type': 'application/json',
     Accept: 'application/json',

@@ -20,8 +20,8 @@ export async function showInvoice(ctx: any, next: () => Promise<any>) {
   } = ctx
 
   const { invoiceNumber } = ctx.vtex.route.params
-  const settings = await smartbill.getSettings()
-  const simpleCrypto = new SimpleCrypto(settings.smarbillApiToken)
+  const smartbillSettings = await smartbill.getSettings()
+  const simpleCrypto = new SimpleCrypto(smartbillSettings.smarbillApiToken)
   const toDecrypt = Buffer.from(invoiceNumber, 'base64').toString('ascii')
   let plainNumber = simpleCrypto.decrypt(toDecrypt) as any
 
