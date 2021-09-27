@@ -1,4 +1,4 @@
-export interface Item {
+export interface OrderItem {
   uniqueId: string
   name: string
   refId: string

@@ -1,7 +1,11 @@
-import { Item } from '../../typings'
+import { OrderItem } from '../../typings'
 import SimpleCrypto from 'simple-crypto-js'
 
-export const mapItems = (sku: any, added: any, imageUrl: string): Item => ({
+export const mapItems = (
+  sku: any,
+  added: any,
+  imageUrl: string
+): OrderItem => ({
   uniqueId: sku.RefId,
   name: sku.Name,
   refId: sku.RefId,
