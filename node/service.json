@@ -23,18 +23,7 @@
     },
     "saveInvoice": {
       "path": "/smartbill/save-invoice/:orderId",
-      "public": true,
-      "policies": [
-        {
-          "effect": "allow",
-          "actions": [
-            "post"
-          ],
-          "principals": [
-            "vrn:*:*:*:*:*"
-          ]
-        }
-      ]
+      "public": true
     }
   }
 }
