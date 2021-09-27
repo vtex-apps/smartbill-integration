@@ -40,7 +40,7 @@ export async function showInvoice(ctx: any, next: () => Promise<any>) {
 
 export async function processChanges(ctx: any, item: any, order: any) {
   if (item?.itemsAdded.length) {
-    item.itemsAdded.map(async (added: any) => {
+    for (const added of item.itemsAdded) {
       const existingProduct = order?.items?.filter((it: any) => {
         return it.id === added.id
       })
@@ -60,7 +60,7 @@ export async function processChanges(ctx: any, item: any, order: any) {
           order.items[index].quantity += added.quantity
         }
       }
-    })
+    }
   }
   if (item?.itemsRemoved?.length) {
     removeItems(item.itemsRemoved, order)
@@ -94,9 +94,9 @@ export async function saveInvoice(ctx: any, next: () => Promise<any>) {
     return
   }
   if (order?.changesAttachment) {
-    order?.changesAttachment?.changesData.map(async function(item: any) {
+    for (const item of order?.changesAttachment?.changesData) {
       await processChanges(ctx, item, order)
-    })
+    }
   }
 
   const ship = order?.totals?.filter(function(item: any) {
@@ -154,19 +154,19 @@ export async function saveInvoice(ctx: any, next: () => Promise<any>) {
 }
 
 export async function removeItems(itemsToRemove: any, order: any) {
-  itemsToRemove.map((removed: any) => {
-    const existingRemovedProduct = order?.items.filter((it: any) => {
+  for (const removed of itemsToRemove) {
+    const existingRemovedProduct = order?.items?.filter((it: any) => {
       return it.id === removed.id
     })
 
     if (existingRemovedProduct.length) {
       if (existingRemovedProduct[0].quantity - removed.quantity == 0) {
-        const index = order?.items.indexOf(existingRemovedProduct[0])
+        const index = order?.items?.indexOf(existingRemovedProduct[0])
 
         if (index !== -1) {
           order?.items.splice(index, 1)
         }
       }
     }
-  })
+  }
 }
