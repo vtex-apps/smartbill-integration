@@ -54,7 +54,6 @@ export async function processChanges(ctx: any, item: any, order: any) {
           imageUrl = existingSku[0].image
         }
         order.items.push(mapItems(sku, added, imageUrl))
-        console.log('items', order.items)
       } else {
         const index = order.items.indexOf(existingProduct[0])
         if (index !== -1) {
@@ -88,8 +87,6 @@ export async function saveInvoice(ctx: any, next: () => Promise<any>) {
     return
   }
 
-  console.log(order)
-
   if (order?.status === 'invoiced') {
     ctx.status = 400
     ctx.body = 'Order already invoiced'
@@ -118,7 +115,6 @@ export async function saveInvoice(ctx: any, next: () => Promise<any>) {
       }
     }),
   }
-  console.log('order', order)
   const { number, encryptedNumber } = await getEncryptedNumber(ctx, { order })
 
   const url = `https://${ctx.vtex.account}.myvtex.com/smartbill/show-invoice/${encryptedNumber}`

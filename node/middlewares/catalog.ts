@@ -41,7 +41,6 @@ export async function getSkuWithVariations(id: string, ctx: any) {
       error: formatError(e),
     })
   }
-  console.log('sku', sku)
   let variations: any
   try {
     variations = await catalogApi.getProductVariations(ctx, sku.ProductId)
@@ -51,7 +50,7 @@ export async function getSkuWithVariations(id: string, ctx: any) {
       error: formatError(e),
     })
   }
-  console.log('variations', variations)
+
   const existingSku = variations.skus.filter((sku: any) => {
     return sku.sku == id
   })
