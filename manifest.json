@@ -1,7 +1,7 @@
 {
   "name": "smartbill",
   "vendor": "vtex",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "title": "SmartBill",
   "description": "SmartBill Integration",
   "billingOptions": {
@@ -27,10 +27,37 @@
   "credentialType": "absolute",
   "policies": [
     {
+      "name": "colossus-fire-event"
+    },
+    {
+      "name": "colossus-write-logs"
+    },
+    {
       "name": "outbound-access",
       "attrs": {
         "host": "ws.SmartBill.ro",
         "path": "/SBORO/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "api.vtex.com",
+        "path": "/api/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "api.vtex.com",
+        "path": "/{{account}}/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "app.io.vtex.com",
+        "path": "*"
       }
     },
     {
@@ -41,7 +68,80 @@
       }
     },
     {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "oms.vtexinternal.com.br",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "LogisticsAdmin"
+    },
+    {
+      "name": "POWER_USER_DS"
+    },
+    {
+      "name": "AcessaTodosPedidos"
+    },
+    {
+      "name": "WorkflowAction"
+    },
+    {
+      "name": "PaymentAction"
+    },
+    {
+      "name": "ShippingAction"
+    },
+    {
+      "name": "OMSViewer"
+    },
+    {
+      "name": "RefundAction"
+    },
+    {
+      "name": "CancelAction"
+    },
+    {
+      "name": "Changes"
+    },
+    {
+      "name": "ShowTotalizers"
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "logistics.vtexcommercestable.com.br",
+        "path": "/api/logistics/pvt/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "{{account}}.vtexcommercestable.com.br",
+        "path": "/api/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "*",
+        "path": "*"
+      }
+    },
+    {
+      "name": "OMSViewer"
+    },
+    {
       "name": "ADMIN_DS"
+    },
+    {
+      "name": "vbase-read-write"
+    },
+    {
+      "name": "Sku.aspx"
+    },
+    {
+      "name": "suggestions"
     },
     {
       "name": "ADMIN_CRM"

@@ -1,5 +1,20 @@
-{
-  "section": "orders",
-  "titleId": "admin/smartbill.navigation.label",
-  "path": "/admin/smartbill/order-list"
-}
+[
+  {
+    "section": "orders",
+    "subSection": "smartbill",
+    "subSectionItems": [
+      {
+        "id": "smartbill",
+        "labelId": "admin/smartbill.navigation.label",
+        "path": "/admin/smartbill/order-list"
+      }
+    ]
+  },
+  {
+    "id": "smartbill",
+    "section": "orders",
+    "titleId": "admin/smartbill.navigation.label",
+    "path": "/admin/smartbill/order-list",
+    "adminVersion": 4
+  }
+]
