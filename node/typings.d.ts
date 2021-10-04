@@ -23,3 +23,7 @@ export interface Dimension {
   length: string
   width: string
 }
+export interface TaxName {
+  name: string
+  percentage: number
+}
