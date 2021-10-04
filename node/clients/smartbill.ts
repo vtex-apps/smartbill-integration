@@ -7,6 +7,18 @@ import { TaxName } from '../typings'
 
 export default class Smartbill extends ExternalClient {
 
+  private static getBuffer(settings: any) {
+
+    // Create buffer object, specifying utf8 as encoding
+    const bufferObj = Buffer.from(
+      `${settings.smarbillUsername}:${settings.smarbillApiToken}`,
+      'utf8'
+    )
+
+    // Encode the Buffer as a base64 string
+    return bufferObj.toString('base64')
+  }
+
   public async generateJson(order: any) {
     const settings = await this.getSettings()
     const todayDate = new Date().toISOString().slice(0, 10)
@@ -55,14 +67,7 @@ export default class Smartbill extends ExternalClient {
   }
 
   public async getTaxCodeName(settings: any) {
-    // Create buffer object, specifying utf8 as encoding
-    const bufferObj = Buffer.from(
-      `${settings.smarbillUsername}:${settings.smarbillApiToken}`,
-      'utf8'
-    )
-
-    // Encode the Buffer as a base64 string
-    const smartBillAuthorization = bufferObj.toString('base64')
+    const smartBillAuthorization = Smartbill.getBuffer(settings)
 
     return this.http.get(`/tax?cif=${settings.smarbillVatCode}`, {
       headers: {
@@ -152,14 +157,7 @@ export default class Smartbill extends ExternalClient {
   public async showInvoice(invoiceNumber: any): Promise<any> {
     const settings = await this.getSettings()
 
-    // Create buffer object, specifying utf8 as encoding
-    const bufferObj = Buffer.from(
-      `${settings.smarbillUsername}:${settings.smarbillApiToken}`,
-      'utf8'
-    )
-
-    // Encode the Buffer as a base64 string
-    const smartBillAuthorization = bufferObj.toString('base64')
+    const smartBillAuthorization = Smartbill.getBuffer(settings)
 
     return this.http.getStream(
       `/invoice/pdf?cif=${settings.smarbillVatCode}&seriesname=${settings.smarbillSeriesName}&number=${invoiceNumber}`,
@@ -185,14 +183,7 @@ export default class Smartbill extends ExternalClient {
     const json = await this.generateJson(order)
 
     const settings = await this.getSettings()
-
-    // Create buffer object, specifying utf8 as encoding
-    const bufferObj = Buffer.from(
-      `${settings.smarbillUsername}:${settings.smarbillApiToken}`,
-      'utf8'
-    )
-    // Encode the Buffer as a base64 string
-    const smartBillAuthorization = bufferObj.toString('base64')
+    const smartBillAuthorization = Smartbill.getBuffer(settings)
 
     return this.http.post('/invoice', json, {
       headers: {
