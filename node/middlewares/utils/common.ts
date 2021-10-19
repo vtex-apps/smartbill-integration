@@ -7,7 +7,7 @@ export const mapItems = (
   imageUrl: string
 ): OrderItem => ({
   uniqueId: sku.RefId,
-  name: sku.Name,
+  name: sku?.Name,
   refId: sku.RefId,
   productId: sku.ProductId,
   id: sku.Id,
