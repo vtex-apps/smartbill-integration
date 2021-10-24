@@ -14,11 +14,11 @@
       "public": true
     },
     "getSkuById": {
-      "path": "/catalog/stockkeepingunit/:skuId",
+      "path": "/smartbill/catalog/stockkeepingunit/:skuId",
       "public": true
     },
     "getProductVariation": {
-      "path": "/catalog/product-variation/:productId",
+      "path": "/smartbill/catalog/product-variation/:productId",
       "public": true
     },
     "saveInvoice": {

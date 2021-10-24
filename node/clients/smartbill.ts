@@ -81,7 +81,7 @@ export default class Smartbill extends ExternalClient {
   }
   private generateTaxName(taxes: Array<any>, value: string | number) {
 
-    return taxes.find((item: TaxName) => item.percentage === parseInt(value as string, 10)).name
+    return taxes.find((item: TaxName) => item.percentage === parseInt(value as string, 10))?.name
   }
 
   public async generateProducts(order: any, settings: any) {
