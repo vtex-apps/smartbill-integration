@@ -137,13 +137,13 @@ class OrderDetails extends Component<any, any> {
             })
 
             if (!existingProduct.length) {
-              fetch(`/catalog/stockkeepingunit/${added.id}`)
+              fetch(`/smartbill/catalog/stockkeepingunit/${added.id}`)
                 .then(resp => resp.json())
                 .then(async json => {
                   let imageUrl = ''
 
                   const variations = await fetch(
-                    `/catalog/product-variation/${json.ProductId}`
+                    `/smartbill/catalog/product-variation/${json.ProductId}`
                   ).then(response => response.json())
 
                   const existingSku = variations.skus.filter(sku => {

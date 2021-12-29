@@ -136,143 +136,6 @@ export default class InvoiceDetails extends Component<any, any> {
     return null
   }
 
-  saveInvoice(number, url) {
-    const { order } = this.state
-    const data = {
-      invoiceNumber: number,
-      invoiceValue: order.value,
-      issuanceDate: new Date().toISOString(),
-      invoiceUrl: url,
-      items: order.items.map(item => {
-        return {
-          id: item.productId,
-          price: item.sellingPrice,
-          quantity: item.quantity,
-        }
-      }),
-    }
-
-    try {
-      axios
-        .post(`/api/oms/pvt/orders/${order.orderId}/invoice`, data, {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-        })
-        .then(response => {
-          this.setState({ invoice: response.data }, () => {
-            window.setTimeout(() => {
-              window.location.reload()
-            }, 10000)
-          })
-        })
-    } catch (err) {
-      const errors = { smartbill: [err] }
-
-      this.props.logError(errors, 'smartbill-errors')
-      this.setState({ errors, modalOpen: true, isLoading: false })
-    }
-  }
-
-  async refreshOrder() {
-    const { order } = this.state
-    const response = await axios.get(
-      `/api/oms/pvt/orders/${order.orderId}/?_=${Date.now()}`
-    )
-
-    if (response.status === 200) {
-      this.setState({ order: response.data }, () => {
-        if (order.changesAttachment) {
-          order.changesAttachment.changesData.map(item => {
-            if (item.itemsAdded.length) {
-              item.itemsAdded.map(added => {
-                const existingProduct = order.items.filter(item => {
-                  return item.id === added.id
-                })
-
-                if (!existingProduct.length) {
-                  fetch(`/catalog/stockkeepingunit/${added.id}`)
-                    .then(resp => resp.json())
-                    .then(async json => {
-                      let imageUrl = ''
-
-                      const variations = await fetch(
-                        `/catalog/product-variation/${json.ProductId}`
-                      ).then(response => response.json())
-
-                      const existingSku = variations.skus.filter(sku => {
-                        return sku.sku == added.id
-                      })
-
-                      if (existingSku.length) {
-                        imageUrl = existingSku[0].image
-                      }
-
-                      order.items.push({
-                        uniqueId: json.RefId,
-                        name: json.Name,
-                        refId: json.RefId,
-                        productId: json.ProductId,
-                        id: json.Id,
-                        additionalInfo: {
-                          dimension: {
-                            cubicweight: json.CubicWeight,
-                            weight: json.WeightKg,
-                            height: json.Height,
-                            length: json.Length,
-                            width: json.Width,
-                          },
-                        },
-                        measurementUnit: json.MeasurementUnit,
-                        tax: 0,
-                        price: added.price,
-                        listPrice: added.price,
-                        sellingPrice: added.price,
-                        quantity: added.quantity,
-                        imageUrl,
-                        unitMultiplier: added.unitMultiplier,
-                        priceTags: [],
-                      })
-                    })
-                } else {
-                  const index = order.items.indexOf(existingProduct[0])
-
-                  if (index !== -1) {
-                    order.items[index].quantity += added.quantity
-                  }
-                }
-              })
-            }
-
-            if (item.itemsRemoved.length) {
-              item.itemsRemoved.map(removed => {
-                const existingRemovedProduct = order.items.filter(item => {
-                  return item.id === removed.id
-                })
-
-                if (existingRemovedProduct.length) {
-                  if (
-                    existingRemovedProduct[0].quantity - removed.quantity ==
-                    0
-                  ) {
-                    const index = order.items.indexOf(existingRemovedProduct[0])
-
-                    if (index !== -1) {
-                      order.items.splice(index, 1)
-                    }
-                  }
-                }
-              })
-            }
-          })
-
-          this.setState({ order })
-        }
-      })
-    }
-  }
-
   async invoice(event) {
     this.setState({ posted: true })
     this.setState({ isLoading: true })
@@ -338,49 +201,29 @@ export default class InvoiceDetails extends Component<any, any> {
 
   async handleInvoice() {
     this.setState({ isLoading: true })
-    await this.refreshOrder()
+    try {
+      await axios
+        .post(`/smartbill/save-invoice/${this.state.order.orderId}`)
+        .then(response => {
+          this.setState(
+            {
+              number: response.data.invoiceNumber,
+              url: response.data.invoiceUrl,
+              date: new Date(response.data.invoiceDate),
+            },
+            () => {
+              window.setTimeout(() => {
+                window.location.reload()
+              }, 10000)
+            }
+          )
+        })
+    } catch (e) {
+      const errors = { smartbill: [e] }
 
-    const ship = this.state.order.totals.filter(function(item) {
-      return item.id === settings.constants.shipping
-    })
-
-    const shipping = ship.length ? ship[0].value : 0
-
-    const order = {
-      ...this.state.order,
-      shippingTotal: shipping / settings.constants.price_multiplier,
-      items: this.state.order.items.map((item: any) => {
-        return {
-          ...item,
-          sellingPrice:
-            (item.sellingPrice + item.tax) /
-            settings.constants.price_multiplier,
-        }
-      }),
+      this.props.logError(errors, 'smartbill-errors')
+      this.setState({ errors, modalOpen: true, isLoading: false })
     }
-
-    await axios
-      .post('/smartbill/generate-invoice', { order })
-      .then(response => {
-        const { number, encryptedNumber } = response.data
-        const url = `${window.location.origin}/smartbill/show-invoice/${encryptedNumber}`
-
-        this.saveInvoice(number, url)
-      })
-      .catch(e => {
-        let message = ''
-
-        if (e.response.data.hasOwnProperty('response')) {
-          message = e.response.data.response.data.errorText
-        } else {
-          message = e.response.data.message
-        }
-
-        const errors = { smartbill: [message] }
-
-        this.props.logError(errors, 'smartbill-errors')
-        this.setState({ errors, modalOpen: true, isLoading: false })
-      })
   }
 
   public renderButton() {

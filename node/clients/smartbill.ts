@@ -3,8 +3,23 @@ import type { InstanceOptions, IOContext } from '@vtex/api'
 import { Apps, ExternalClient } from '@vtex/api'
 import { validate } from 'validate.js'
 import constants from '../constants';
+import { TaxName } from '../typings'
+import {mergeArrays} from "../helpers";
 
 export default class Smartbill extends ExternalClient {
+
+  private static getBuffer(settings: any) {
+
+    // Create buffer object, specifying utf8 as encoding
+    const bufferObj = Buffer.from(
+      `${settings.smarbillUsername}:${settings.smarbillApiToken}`,
+      'utf8'
+    )
+
+    // Encode the Buffer as a base64 string
+    return bufferObj.toString('base64')
+  }
+
   public async generateJson(order: any) {
     const settings = await this.getSettings()
     const todayDate = new Date().toISOString().slice(0, 10)
@@ -26,12 +41,12 @@ export default class Smartbill extends ExternalClient {
       clientData.vatCode = client.corporateDocument
       clientData.name = client.tradeName
     }
-
+    const products = await this.generateProducts(order, settings)
     return {
       client: clientData,
       companyVatCode: settings.smarbillVatCode,
       issueDate: todayDate,
-      products: Smartbill.generateProducts(order, settings),
+      products,
       seriesName: settings.smarbillSeriesName,
     }
   }
@@ -52,20 +67,43 @@ export default class Smartbill extends ExternalClient {
     return validate(settings, constraints, { format: 'flat' })
   }
 
-  public static generateProducts(order: any, settings: any) {
-    const items = order.items.map((item: any) => {
-      let vatPercent
+  public async getTaxCodeName(settings: any) {
+    const smartBillAuthorization = Smartbill.getBuffer(settings)
 
+    return this.http.get(`/tax?cif=${settings.smarbillVatCode}`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-Vtex-Use-Https': true,
+        Authorization: `Basic ${smartBillAuthorization}`,
+      },
+    })
+
+  }
+  private generateTaxName(taxes: Array<any>, value: string | number) {
+
+    return taxes.find((item: TaxName) => item.percentage === parseInt(value as string, 10))?.name
+  }
+
+
+  public async generateProducts(order: any, settings: any) {
+    const productTaxNames = await this.getTaxCodeName(settings)
+
+    let items = order.items.map((item: any) => {
+      let taxCode = item.taxCode || settings.smartbillDefaultVATPercentage
+      let vatPercent = taxCode
       if (settings.useVtexProductTaxValue) {
         vatPercent = item.priceTags.reduce((result: any, tag: any) => {
+
           if (tag.isPercentual) {
             result = tag.value
           }
           return result
-        }, settings.smartbillDefaultVATPercentage)
-      } else {
-        vatPercent = settings.smartbillDefaultVATPercentage
+        },
+          taxCode)
       }
+
+      const taxName = this.generateTaxName(productTaxNames.taxes, vatPercent)
 
       return {
         code: item.uniqueId,
@@ -75,10 +113,65 @@ export default class Smartbill extends ExternalClient {
         name: item.name,
         price: item.sellingPrice,
         quantity: item.quantity,
-        taxName: constants.taxName,
+        taxName: taxName,
         taxPercentage: vatPercent,
       }
     })
+
+
+    if(order.changesAttachment) {
+      order.changesAttachment.changesData.forEach((change: any) => {
+        if(change.itemsAdded) {
+          change.itemsAdded.forEach((item: any) => {
+            const orderProduct = items.filter((prod: any) => prod.id === item.id && prod.price === item.price);
+
+            if(orderProduct.length) {
+              let [currentProduct] = orderProduct;
+              currentProduct = {
+                ...currentProduct,
+                quantity: currentProduct.quantity + item.quantity
+              }
+              items = mergeArrays(items, currentProduct);
+            } else {
+              const currentProduct = {
+                id: item.id,
+                code: Math.floor(Math.random() * 100),
+                currency: order.storePreferencesData.currencyCode,
+                isTaxIncluded: true,
+                measuringUnitName: 'buc',
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+                taxName: 'tax',
+                taxPercentage: settings.smartbillDefaultVATPercentage
+              }
+              items.push(currentProduct);
+            }
+
+
+          })
+        }
+
+        if(change.itemsRemoved) {
+          change.itemsRemoved.forEach((item: any) => {
+            const orderProduct = items.filter((prod: any) => prod.id === item.id && prod.price === item.price);
+            if(orderProduct.length) {
+              let [currentProduct] = orderProduct;
+              if(currentProduct.quantity - item.quantity) {
+                currentProduct = {
+                  ...currentProduct,
+                  quantity: currentProduct.quantity - item.quantity
+                }
+                items = mergeArrays(items, currentProduct);
+              } else {
+                items = items.filter((product: any) => product.id !== item.id)
+              }
+
+            }
+          })
+        }
+      })
+    }
 
     if (
       settings.invoiceShippingCost &&
@@ -86,6 +179,8 @@ export default class Smartbill extends ExternalClient {
       order.hasOwnProperty('shippingTotal') &&
       order.shippingTotal > 0
     ) {
+
+      const taxName = this.generateTaxName(productTaxNames.taxes, settings.smartbillDefaultVATPercentage)
       items.push({
         code: settings.invoiceShippingProductCode,
         currency: order.storePreferencesData.currencyCode,
@@ -94,7 +189,7 @@ export default class Smartbill extends ExternalClient {
         name: settings.invoiceShippingProductName,
         price: order.shippingTotal,
         quantity: 1,
-        taxName: 'Normala',
+        taxName: taxName,
         taxPercentage: settings.smartbillDefaultVATPercentage,
         isService: true,
       })
@@ -117,14 +212,7 @@ export default class Smartbill extends ExternalClient {
   public async showInvoice(invoiceNumber: any): Promise<any> {
     const settings = await this.getSettings()
 
-    // Create buffer object, specifying utf8 as encoding
-    const bufferObj = Buffer.from(
-      `${settings.smarbillUsername}:${settings.smarbillApiToken}`,
-      'utf8'
-    )
-
-    // Encode the Buffer as a base64 string
-    const smartBillAuthorization = bufferObj.toString('base64')
+    const smartBillAuthorization = Smartbill.getBuffer(settings)
 
     return this.http.getStream(
       `/invoice/pdf?cif=${settings.smarbillVatCode}&seriesname=${settings.smarbillSeriesName}&number=${invoiceNumber}`,
@@ -150,15 +238,7 @@ export default class Smartbill extends ExternalClient {
     const json = await this.generateJson(order)
 
     const settings = await this.getSettings()
-
-    // Create buffer object, specifying utf8 as encoding
-    const bufferObj = Buffer.from(
-      `${settings.smarbillUsername}:${settings.smarbillApiToken}`,
-      'utf8'
-    )
-
-    // Encode the Buffer as a base64 string
-    const smartBillAuthorization = bufferObj.toString('base64')
+    const smartBillAuthorization = Smartbill.getBuffer(settings)
 
     return this.http.post('/invoice', json, {
       headers: {
