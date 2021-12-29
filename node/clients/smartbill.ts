@@ -4,6 +4,7 @@ import { Apps, ExternalClient } from '@vtex/api'
 import { validate } from 'validate.js'
 import constants from '../constants';
 import { TaxName } from '../typings'
+import {mergeArrays} from "../helpers";
 
 export default class Smartbill extends ExternalClient {
 
@@ -84,10 +85,11 @@ export default class Smartbill extends ExternalClient {
     return taxes.find((item: TaxName) => item.percentage === parseInt(value as string, 10))?.name
   }
 
+
   public async generateProducts(order: any, settings: any) {
     const productTaxNames = await this.getTaxCodeName(settings)
 
-    const items = order.items.map((item: any) => {
+    let items = order.items.map((item: any) => {
       let taxCode = item.taxCode || settings.smartbillDefaultVATPercentage
       let vatPercent = taxCode
       if (settings.useVtexProductTaxValue) {
@@ -117,6 +119,59 @@ export default class Smartbill extends ExternalClient {
     })
 
 
+    if(order.changesAttachment) {
+      order.changesAttachment.changesData.forEach((change: any) => {
+        if(change.itemsAdded) {
+          change.itemsAdded.forEach((item: any) => {
+            const orderProduct = items.filter((prod: any) => prod.id === item.id && prod.price === item.price);
+
+            if(orderProduct.length) {
+              let [currentProduct] = orderProduct;
+              currentProduct = {
+                ...currentProduct,
+                quantity: currentProduct.quantity + item.quantity
+              }
+              items = mergeArrays(items, currentProduct);
+            } else {
+              const currentProduct = {
+                id: item.id,
+                code: Math.floor(Math.random() * 100),
+                currency: order.storePreferencesData.currencyCode,
+                isTaxIncluded: true,
+                measuringUnitName: 'buc',
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+                taxName: 'tax',
+                taxPercentage: settings.smartbillDefaultVATPercentage
+              }
+              items.push(currentProduct);
+            }
+
+
+          })
+        }
+
+        if(change.itemsRemoved) {
+          change.itemsRemoved.forEach((item: any) => {
+            const orderProduct = items.filter((prod: any) => prod.id === item.id && prod.price === item.price);
+            if(orderProduct.length) {
+              let [currentProduct] = orderProduct;
+              if(currentProduct.quantity - item.quantity) {
+                currentProduct = {
+                  ...currentProduct,
+                  quantity: currentProduct.quantity - item.quantity
+                }
+                items = mergeArrays(items, currentProduct);
+              } else {
+                items = items.filter((product: any) => product.id !== item.id)
+              }
+
+            }
+          })
+        }
+      })
+    }
 
     if (
       settings.invoiceShippingCost &&
