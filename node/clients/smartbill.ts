@@ -28,9 +28,12 @@ export default class Smartbill extends ExternalClient {
       shippingData: { address },
     } = order
 
+    const clientEntity = await this.getClient(client.userProfileId)
+    const email = clientEntity.length ? clientEntity[0].email : client.email
+
     const clientData: any = {
       country: constants.country,
-      email: client.email,
+      email,
       name: `${client.lastName} ${client.firstName}`,
       address: `${address.street} ${address.number}`,
       city: `${address.city}`,
@@ -41,7 +44,9 @@ export default class Smartbill extends ExternalClient {
       clientData.vatCode = client.corporateDocument
       clientData.name = client.tradeName
     }
+
     const products = await this.generateProducts(order, settings)
+
     return {
       client: clientData,
       companyVatCode: settings.smarbillVatCode,
@@ -49,6 +54,17 @@ export default class Smartbill extends ExternalClient {
       products,
       seriesName: settings.smarbillSeriesName,
     }
+  }
+
+  public async getClient(userProfileId: any): Promise<any> {
+    return this.http.get(
+      `http://${this.context.account}.vtexcommercestable.com.br/api/dataentities/CL/search/?_fields=_all&_where=userId=${userProfileId}`,
+      {
+        headers: {
+          VtexIdclientAutCookie: this.context.authToken,
+        },
+      }
+    )
   }
 
   private async validateSettings() {
