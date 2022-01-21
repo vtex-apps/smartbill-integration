@@ -1,7 +1,7 @@
 {
   "name": "smartbill",
   "vendor": "vtex",
-  "title": "SmartBill",
+  "title": "SmartBill Integration",
   "version": "2.1.6",
   "description": "SmartBill Integration",
   "billingOptions": {

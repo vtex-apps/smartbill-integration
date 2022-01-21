@@ -1,0 +1,23 @@
+{
+  "name": "SmartBill",
+    "headline": "The most popular invoicing and invoice management platform in Romania.",
+  "overview": "This app allows you to integrate with the SmartBill platform, allowing you to send your invoices straight into your SmartBill account. Smartbill is an electronic invoicing platform that allows its users to create and manage all their fiscal documents online. By integrating your VTEX store with your Smartbill account, you can make sure all your invoices are safely stored in one place.",
+  "features": [
+    "Integrates your VTEX store with your Smartbill account",
+    "Allows you to send invoices to Smartbill.ro",
+    "Allows you to add shipping costs and taxes to each invoice",
+    "Gives you the possibility to adjust VAT value"
+  ],
+    "additionalinformation": "This app requires a valid www.smartbill.ro account. The account can be either paid or a free trial account.",
+  "video": "",
+  "websiteURL": "https://smartbill.ro/",
+  "support": {
+      "email":"",
+      "url": "https://help-tickets.vtex.com/",
+      "phone":""
+    },
+  "metricDescription": {
+    "track": "English description for metric track",
+    "notify": "English description for metric notify en-US"
+  }
+}
