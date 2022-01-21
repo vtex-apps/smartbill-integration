@@ -1,0 +1,23 @@
+{
+  "name": "SmartBill",
+  "headline": "A plataforma de faturamento e gerenciamento de faturas mais popular da Romênia.",
+  "overview": "Este aplicativo permite a integração com a plataforma SmartBill, permitindo que você envie suas faturas diretamente para sua conta SmartBill. Smartbill é uma plataforma de faturação eletrónica que permite aos seus utilizadores criar e gerir online todos os seus documentos fiscais. Ao integrar sua loja VTEX com sua conta Smartbill, você garante que todas as suas faturas sejam armazenadas com segurança em um só lugar.",
+  "features": [
+    "Integra sua loja VTEX com sua conta Smartbill",
+    "Permite enviar faturas para Smartbill.ro",
+    "Permite adicionar custos de envio e impostos a cada fatura",
+    "Dá-lhe a possibilidade de ajustar o valor do IVA"
+  ],
+  "additionalinformation": "Este aplicativo requer uma conta válida www.smartbill.ro. A conta pode ser paga ou uma conta de avaliação gratuita.",
+  "video": "",
+  "websiteURL": "https://smartbill.ro/",
+  "support": {
+    "email": "",
+    "url": "https://help-tickets.vtex.com/",
+    "phone": ""
+  },
+  "metricDescription": {
+    "track": "English description for metric track",
+    "notify": "English description for metric notify en-US"
+  }
+}

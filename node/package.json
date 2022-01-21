@@ -15,7 +15,10 @@
     "@vtex/api": "6.45.6",
     "@vtex/test-tools": "^1.0.0",
     "@vtex/tsconfig": "^0.5.6",
-    "typescript": "3.9.7"
+    "typescript": "3.9.7",
+    "vtex.format-currency": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.format-currency@0.3.0/public/@types/vtex.format-currency",
+    "vtex.smartbill": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.smartbill@2.2.2/public/@types/vtex.smartbill",
+    "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.145.2/public/@types/vtex.styleguide"
   },
   "scripts": {
     "lint": "tsc --noEmit --pretty"
