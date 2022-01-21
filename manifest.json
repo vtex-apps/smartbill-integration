@@ -9,7 +9,10 @@
     "support": {
       "url": "https://support.vtex.com/hc/requests"
     },
-    "free": true
+    "type": "free",
+    "availableCountries": [
+      "ROU"
+    ]
   },
   "mustUpdateAt": "2022-08-28",
   "categories": [],
