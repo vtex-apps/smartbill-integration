@@ -8,16 +8,9 @@
     "Permite adicionar custos de envio e impostos a cada fatura",
     "Dá-lhe a possibilidade de ajustar o valor do IVA"
   ],
-  "additionalinformation": "Este aplicativo requer uma conta válida www.smartbill.ro. A conta pode ser paga ou uma conta de avaliação gratuita.",
-  "video": "",
+  "additionalInformation": "Este aplicativo requer uma conta válida www.smartbill.ro. A conta pode ser paga ou uma conta de avaliação gratuita.",
   "websiteURL": "https://smartbill.ro/",
   "support": {
-    "email": "",
-    "url": "https://help-tickets.vtex.com/",
-    "phone": ""
-  },
-  "metricDescription": {
-    "track": "English description for metric track",
-    "notify": "English description for metric notify en-US"
+    "url": "https://support.vtex.com/hc/requests"
   }
 }

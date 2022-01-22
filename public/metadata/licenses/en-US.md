@@ -98,29 +98,29 @@ Master Services Agreement” means the Agreement executed by and between Client,
 
 6.1. When using any APP, User expressly and unequivocally declares that it is in agreement with these Terms and the APP Terms of Use, and undertakes:
 
-a.  Not to violate any provision of these Terms;
+a. Not to violate any provision of these Terms;
 
-b.  To supply true registration data, in conformity with the local legislation
+b. To supply true registration data, in conformity with the local legislation
 
-c.  Not to make available untrue information (e.g., purposeful and voluntary disclosure of information that User knows is untrue or notoriously untrue) and/or practice criminal misrepresentation;
+c. Not to make available untrue information (e.g., purposeful and voluntary disclosure of information that User knows is untrue or notoriously untrue) and/or practice criminal misrepresentation;
 
-d.  Not to practice any act against good faith and uses and costumes of the virtual communities, which may offend any third parties’ right;
+d. Not to practice any act against good faith and uses and costumes of the virtual communities, which may offend any third parties’ right;
 
-e.  Not to commit fraud;
+e. Not to commit fraud;
 
-f.  Not to violate or infringe third parties’ rights, in particular intellectual property rights, contractual rights and intimacy & privacy rights;
+f. Not to violate or infringe third parties’ rights, in particular intellectual property rights, contractual rights and intimacy & privacy rights;
 
-g.  Not to propagate, distribute or transmit destructive codes, whether or not they have caused real damages;
+g. Not to propagate, distribute or transmit destructive codes, whether or not they have caused real damages;
 
-h.  Not to collect Personal Data or commercial data, including, but not limited to, e-mail addresses and/or names of any Internet resource, for commercial, political, charitable or other purposes, without the consent of the owners of such data or other legal grounds or basis authorizing such collection;
+h. Not to collect Personal Data or commercial data, including, but not limited to, e-mail addresses and/or names of any Internet resource, for commercial, political, charitable or other purposes, without the consent of the owners of such data or other legal grounds or basis authorizing such collection;
 
-i.  Not to reproduce, replicate, copy, alter, monitor, modify, create derivative works from, sell or resell any APP and/or Service or part thereof, which are not in the public domain;
+i. Not to reproduce, replicate, copy, alter, monitor, modify, create derivative works from, sell or resell any APP and/or Service or part thereof, which are not in the public domain;
 
-j.  Not to carry out or encourage illegal activities, including, but not limited to, promoting or facilitating the access, use or sale of dangerous substances or devices;
+j. Not to carry out or encourage illegal activities, including, but not limited to, promoting or facilitating the access, use or sale of dangerous substances or devices;
 
-k.  Comply with all applicable laws, norms, rules, principles and regulations;
+k. Comply with all applicable laws, norms, rules, principles and regulations;
 
-l.  Use the APP solely for the purpose expressly provided in these Terms.
+l. Use the APP solely for the purpose expressly provided in these Terms.
 
 ### 7. APP AVAILABILITY
 
@@ -154,7 +154,7 @@ l.  Use the APP solely for the purpose expressly provided in these Terms.
 
 8.4. User agrees that they are contracting the application and their services in their as-is state, being aware that there are not guarantees regarding the supply and provision of these services before VTEX.
 
-8.5. Should VTEX be held liable for issues relative to the subject-matter of these Terms, under no circumstance shall it bear damages in excess of ten thousand reais (R$ 10,000.00).
+8.5. Should VTEX be held liable for issues relative to the subject-matter of these Terms, under no circumstance shall it bear damages in excess of ten thousand reais (R\$ 10,000.00).
 
 ### 9. CONFIDENTIALITY
 
