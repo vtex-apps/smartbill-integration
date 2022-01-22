@@ -56,10 +56,10 @@ export default class InvoiceDetails extends Component<any, any> {
     })
   }
 
-  orderInit() {
+  public orderInit() {
     const { order } = this.state
 
-    if (!order.hasOwnProperty('error')) {
+    if (!order.error) {
       if (order.status === settings.constants.invoiced) {
         const packageItem = order.packageAttachment.packages[0]
 
@@ -72,11 +72,11 @@ export default class InvoiceDetails extends Component<any, any> {
     }
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     this.orderInit()
   }
 
-  validForm() {
+  public validForm() {
     const { number, date, url } = this.state
 
     return !(
@@ -90,7 +90,7 @@ export default class InvoiceDetails extends Component<any, any> {
     )
   }
 
-  validate(value) {
+  public validate(value) {
     const { order } = this.state
     const { formatMessage } = this.props.intl
 
@@ -109,7 +109,7 @@ export default class InvoiceDetails extends Component<any, any> {
     return null
   }
 
-  validateInvoiceNumber(value) {
+  public validateInvoiceNumber(value) {
     const { order } = this.state
     const { formatMessage } = this.props.intl
 
@@ -136,7 +136,7 @@ export default class InvoiceDetails extends Component<any, any> {
     return null
   }
 
-  async invoice(event) {
+  public async invoice(event) {
     this.setState({ posted: true })
     this.setState({ isLoading: true })
     if (!this.validForm()) {
@@ -151,7 +151,7 @@ export default class InvoiceDetails extends Component<any, any> {
       const items = order.items.map(item => {
         return {
           id: item.productId,
-          price: item.sellingPrice + item.tax,
+          price: Number(item.sellingPrice) + Number(item.tax),
           quantity: item.quantity,
         }
       })
@@ -199,7 +199,7 @@ export default class InvoiceDetails extends Component<any, any> {
     return null
   }
 
-  async handleInvoice() {
+  public async handleInvoice() {
     this.setState({ isLoading: true })
     try {
       await axios
@@ -236,7 +236,7 @@ export default class InvoiceDetails extends Component<any, any> {
     }
 
     return (
-      <div className={`mb5 mt5 flex flex-row`}>
+      <div className="mb5 mt5 flex flex-row">
         <div className={`${styles.textCenter} ${styles.flex07}`}>
           <Button
             onClick={() => this.handleInvoice()}
@@ -251,7 +251,7 @@ export default class InvoiceDetails extends Component<any, any> {
     )
   }
 
-  closeModal = () => {
+  handleCloseModal = () => {
     this.setState({ modalOpen: false, errors: {} })
   }
 
@@ -263,11 +263,15 @@ export default class InvoiceDetails extends Component<any, any> {
       <Modal
         centered
         isOpen={this.state.modalOpen}
-        onClose={this.closeModal}
+        onClose={this.handleCloseModal}
         bottomBar={
           <div className="nowrap">
-            <span className={`mr4`}>
-              <Button variation="danger" size="small" onClick={this.closeModal}>
+            <span className="mr4">
+              <Button
+                variation="danger"
+                size="small"
+                onClick={this.handleCloseModal}
+              >
                 {formatMessage({ id: messages.close.id })}
               </Button>
             </span>
@@ -275,7 +279,7 @@ export default class InvoiceDetails extends Component<any, any> {
         }
       >
         <div>
-          <p className={`f3 f3-ns fw3 gray`}>
+          <p className="f3 f3-ns fw3 gray">
             {formatMessage({ id: messages.errors.id })}
           </p>
           <ul>
@@ -294,14 +298,14 @@ export default class InvoiceDetails extends Component<any, any> {
     const disabled = true
     let buttons
 
-    if (order.hasOwnProperty('error')) {
+    if (order.error) {
       return null
     }
 
     if (this.state.url) {
       buttons = (
         <div className={`mt6 ${styles.flex03}`}>
-          <span className={`ml4`}>
+          <span className="ml4">
             <Button
               onClick={() => this.copyCodeToClipboard(this.state.url)}
               variation="secondary"
@@ -310,7 +314,7 @@ export default class InvoiceDetails extends Component<any, any> {
               copy
             </Button>
           </span>
-          <span className={`ml4`}>
+          <span className="ml4">
             <Link target="_blank" href={this.state.url}>
               link
             </Link>
@@ -321,15 +325,12 @@ export default class InvoiceDetails extends Component<any, any> {
 
     return (
       <div className={`pa6 ${styles.flex05}`}>
-        <Box
-          className={`${styles.flex05}`}
-          title={`${formatMessage({ id: messages.invoice.id })}`}
-        >
-          <div className={`mb5 mt5`}>
+        <Box title={`${formatMessage({ id: messages.invoice.id })}`}>
+          <div className="mb5 mt5">
             <span>{formatMessage({ id: messages.invoiceInformation.id })}</span>
           </div>
 
-          <div className={`mb5 flex flex-row`}>
+          <div className="mb5 flex flex-row">
             <div className={`${styles.flex07}`}>
               <Input
                 id="name"
@@ -345,7 +346,7 @@ export default class InvoiceDetails extends Component<any, any> {
             </div>
           </div>
 
-          <div className={`mb5 flex flex-row`}>
+          <div className="mb5 flex flex-row">
             <div className={`${styles.flex07}`}>
               <DatePicker
                 id="date"
@@ -359,7 +360,7 @@ export default class InvoiceDetails extends Component<any, any> {
             </div>
           </div>
 
-          <div className={`mb5 flex flex-row`}>
+          <div className="mb5 flex flex-row">
             <div className={`${styles.flex07}`}>
               <Input
                 id="url"
