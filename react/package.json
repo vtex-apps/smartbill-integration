@@ -1,6 +1,6 @@
 {
   "name": "smartbill",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "scripts": {
     "test": "vtex-test-tools test"
   },
