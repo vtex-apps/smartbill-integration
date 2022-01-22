@@ -8,16 +8,9 @@
     "Allows you to add shipping costs and taxes to each invoice",
     "Gives you the possibility to adjust VAT value"
   ],
-  "additionalinformation": "This app requires a valid www.smartbill.ro account. The account can be either paid or a free trial account.",
-  "video": "",
+  "additionalInformation": "This app requires a valid www.smartbill.ro account. The account can be either paid or a free trial account.",
   "websiteURL": "https://smartbill.ro/",
   "support": {
-    "email": "",
-    "url": "https://help-tickets.vtex.com/",
-    "phone": ""
-  },
-  "metricDescription": {
-    "track": "English description for metric track",
-    "notify": "English description for metric notify en-US"
+    "url": "https://support.vtex.com/hc/requests"
   }
 }
