@@ -2,8 +2,9 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { Apps, ExternalClient } from '@vtex/api'
 import { validate } from 'validate.js'
+
 import constants from '../constants';
-import { TaxName } from '../typings'
+import type { AddressForm, TaxName } from '../typings'
 import {mergeArrays} from "../helpers";
 
 export default class Smartbill extends ExternalClient {
@@ -20,8 +21,9 @@ export default class Smartbill extends ExternalClient {
     return bufferObj.toString('base64')
   }
 
-  public async generateJson(order: any) {
+  public async generateJson(order: any, addressForm?: AddressForm) {
     const settings = await this.getSettings()
+
     const todayDate = new Date().toISOString().slice(0, 10)
     const {
       clientProfileData: client,
@@ -35,14 +37,16 @@ export default class Smartbill extends ExternalClient {
       country: constants.country,
       email,
       name: `${client.lastName} ${client.firstName}`,
-      address: `${address.street} ${address.number}`,
-      city: `${address.city}`,
-      county: `${address.state}`,
+      address: addressForm?.corporateAddress ? addressForm.corporateAddress : `${address.street} ${address.number}`,
+      city: addressForm?.city ? addressForm.city : `${address.city}`,
+      county: addressForm?.county ? addressForm.county : `${address.state}`,
     }
+
 
     if (client.isCorporate) {
       clientData.vatCode = client.corporateDocument
       clientData.name = client.tradeName
+      clientData.regCom = client.stateInscription
     }
 
     const products = await this.generateProducts(order, settings)
@@ -96,7 +100,8 @@ export default class Smartbill extends ExternalClient {
     })
 
   }
-  private generateTaxName(taxes: Array<any>, value: string | number) {
+
+  private generateTaxName(taxes: any[], value: string | number) {
 
     return taxes.find((item: TaxName) => item.percentage === parseInt(value as string, 10))?.name
   }
@@ -106,14 +111,16 @@ export default class Smartbill extends ExternalClient {
     const productTaxNames = await this.getTaxCodeName(settings)
 
     let items = order.items.map((item: any) => {
-      let taxCode = item.taxCode || settings.smartbillDefaultVATPercentage
+      const taxCode = item.taxCode || settings.smartbillDefaultVATPercentage
       let vatPercent = taxCode
+
       if (settings.useVtexProductTaxValue) {
         vatPercent = item.priceTags.reduce((result: any, tag: any) => {
 
           if (tag.isPercentual) {
             result = tag.value
           }
+
           return result
         },
           taxCode)
@@ -129,7 +136,7 @@ export default class Smartbill extends ExternalClient {
         name: item.name,
         price: item.sellingPrice,
         quantity: item.quantity,
-        taxName: taxName,
+        taxName,
         taxPercentage: vatPercent,
       }
     })
@@ -143,6 +150,7 @@ export default class Smartbill extends ExternalClient {
 
             if(orderProduct.length) {
               let [currentProduct] = orderProduct;
+
               currentProduct = {
                 ...currentProduct,
                 quantity: currentProduct.quantity + item.quantity
@@ -161,6 +169,7 @@ export default class Smartbill extends ExternalClient {
                 taxName: 'tax',
                 taxPercentage: settings.smartbillDefaultVATPercentage
               }
+
               items.push(currentProduct);
             }
 
@@ -171,8 +180,10 @@ export default class Smartbill extends ExternalClient {
         if(change.itemsRemoved) {
           change.itemsRemoved.forEach((item: any) => {
             const orderProduct = items.filter((prod: any) => prod.id === item.id && prod.price === item.price);
+
             if(orderProduct.length) {
               let [currentProduct] = orderProduct;
+
               if(currentProduct.quantity - item.quantity) {
                 currentProduct = {
                   ...currentProduct,
@@ -197,6 +208,7 @@ export default class Smartbill extends ExternalClient {
     ) {
 
       const taxName = this.generateTaxName(productTaxNames.taxes, settings.smartbillDefaultVATPercentage)
+
       items.push({
         code: settings.invoiceShippingProductCode,
         currency: order.storePreferencesData.currencyCode,
@@ -205,7 +217,7 @@ export default class Smartbill extends ExternalClient {
         name: settings.invoiceShippingProductName,
         price: order.shippingTotal,
         quantity: 1,
-        taxName: taxName,
+        taxName,
         taxPercentage: settings.smartbillDefaultVATPercentage,
         isService: true,
       })
@@ -243,7 +255,7 @@ export default class Smartbill extends ExternalClient {
     )
   }
 
-  public async generateInvoice(body: any): Promise<any> {
+  public async generateInvoice(body: any, address?: AddressForm): Promise<any> {
     const errors = await this.validateSettings()
 
     if (errors) {
@@ -251,7 +263,7 @@ export default class Smartbill extends ExternalClient {
     }
 
     const { order } = body
-    const json = await this.generateJson(order)
+    const json = await this.generateJson(order, address)
 
     const settings = await this.getSettings()
     const smartBillAuthorization = Smartbill.getBuffer(settings)

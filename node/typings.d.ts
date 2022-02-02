@@ -27,3 +27,9 @@ export interface TaxName {
   name: string
   percentage: number
 }
+
+export interface AddressForm {
+  corporateAddress?: string
+  city?: string
+  county?: string
+}

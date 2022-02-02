@@ -1,13 +1,16 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 import { json } from 'co-body'
 import SimpleCrypto from 'simple-crypto-js'
+
 import { settings } from '../../constants'
+import type { AddressForm } from '../../typings'
 import { getSkuWithVariations } from '../catalog'
 import { getEncryptedNumber, mapItems } from '../utils/common'
 import { formatError } from '../utils/error'
 
 export async function generateInvoice(ctx: any, next: () => Promise<any>) {
   const body = await json(ctx.req)
+
   ctx.status = 200
   ctx.body = getEncryptedNumber(ctx, body)
 
@@ -44,45 +47,57 @@ export async function processChanges(ctx: any, item: any, order: any) {
       const existingProduct = order?.items?.filter((it: any) => {
         return it.id === added.id
       })
+
       let imageUrl = ''
+
       if (!existingProduct.length) {
         const { sku, existingSku } = await getSkuWithVariations(
           added.id.toString(),
           ctx
         )
+
         if (existingSku.length) {
           imageUrl = existingSku[0].image
         }
+
         order.items.push(mapItems(sku, added, imageUrl))
       } else {
         const index = order?.items?.indexOf(existingProduct[0])
+
         if (index !== -1) {
           order.items[index].quantity += added.quantity
         }
       }
     }
   }
+
   if (item?.itemsRemoved?.length) {
     removeItems(item.itemsRemoved, order)
   }
 }
 
-export async function saveInvoice(ctx: any, next: () => Promise<any>) {
+export async function saveInvoice(ctx: Context, next: () => Promise<any>) {
   const {
-    clients: { oms, logger },
+    clients: { oms },
+    vtex: { logger },
   } = ctx
 
+  const { corporateAddress, city, county }: AddressForm = await json(ctx.req)
+
   const { orderId } = ctx.vtex.route.params
+
   let order: any
+
   try {
-    order = await oms.getOrderId(orderId)
+    order = await oms.getOrderId(orderId as string)
   } catch (e) {
-    logger.error({
+    logger?.error({
       message: 'SAVE-INVOICE-ERROR',
       error: formatError(e),
+      orderId
     })
     ctx.status = 500
-    ctx.body = e.response
+    ctx.body = formatError(e)
 
     return
   }
@@ -93,15 +108,17 @@ export async function saveInvoice(ctx: any, next: () => Promise<any>) {
 
     return
   }
+
   if (order?.changesAttachment) {
     for (const item of order?.changesAttachment?.changesData) {
       await processChanges(ctx, item, order)
     }
   }
 
-  const ship = order?.totals?.filter(function(item: any) {
+  const ship = order?.totals?.filter(function (item: any) {
     return item.id === settings.constants.shipping
   })
+
   const shipping = ship.length ? ship[0].value : 0
 
   order = {
@@ -115,7 +132,30 @@ export async function saveInvoice(ctx: any, next: () => Promise<any>) {
       }
     }),
   }
-  const { number, encryptedNumber } = await getEncryptedNumber(ctx, { order })
+  let number: string
+  let encryptedNumber: string
+
+  try {
+    const responseEncryptedNumber = await getEncryptedNumber(
+      ctx,
+      { order },
+      { corporateAddress, city, county }
+    )
+
+    number = responseEncryptedNumber.number
+    encryptedNumber = responseEncryptedNumber.encryptedNumber
+  } catch (e) {
+    logger.error({
+      middleware: 'GET ENCRYPTED NUMBER',
+      error: formatError(e),
+      orderId,
+    })
+    ctx.status = 500
+    ctx.body = formatError(e)
+
+    return
+  }
+
 
   const url = `https://${ctx.vtex.account}.myvtex.com/smartbill/show-invoice/${encryptedNumber}`
 
@@ -132,22 +172,26 @@ export async function saveInvoice(ctx: any, next: () => Promise<any>) {
       }
     }),
   }
+
   try {
-    await oms.postInvoice(orderId, data)
+    await oms.postInvoice(orderId as string, data)
+    ctx.status = 200
+    ctx.body = {
+      invoiceNumber: number,
+      invoiceDate: data.issuanceDate,
+      invoiceUrl: data.invoiceUrl,
+    }
+
   } catch (e) {
     logger.error({
       middleware: 'SAVE-INVOICE',
       error: formatError(e),
+      orderId,
     })
     ctx.status = 500
     ctx.body = formatError(e)
-  }
 
-  ctx.status = 200
-  ctx.body = {
-    invoiceNumber: number,
-    invoiceDate: data.issuanceDate,
-    invoiceUrl: data.invoiceUrl,
+    return
   }
 
   await next()
@@ -160,7 +204,7 @@ export async function removeItems(itemsToRemove: any, order: any) {
     })
 
     if (existingRemovedProduct.length) {
-      if (existingRemovedProduct[0].quantity - removed.quantity == 0) {
+      if (existingRemovedProduct[0].quantity - removed.quantity === 0) {
         const index = order?.items?.indexOf(existingRemovedProduct[0])
 
         if (index !== -1) {
