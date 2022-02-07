@@ -5,14 +5,18 @@ import SimpleCrypto from 'simple-crypto-js'
 import { settings } from '../../constants'
 import type { AddressForm } from '../../typings'
 import { getSkuWithVariations } from '../catalog'
-import { getEncryptedNumber, mapItems } from '../utils/common'
+import { mapItems } from '../utils/common'
 import { formatError } from '../utils/error'
 
 export async function generateInvoice(ctx: any, next: () => Promise<any>) {
+  const {
+    clients: { smartbill },
+  } = ctx
+
   const body = await json(ctx.req)
 
   ctx.status = 200
-  ctx.body = getEncryptedNumber(ctx, body)
+  ctx.body = smartbill.getEncryptedNumber(body)
 
   await next()
 }
@@ -78,7 +82,7 @@ export async function processChanges(ctx: any, item: any, order: any) {
 
 export async function saveInvoice(ctx: Context, next: () => Promise<any>) {
   const {
-    clients: { oms },
+    clients: { oms, smartbill },
     vtex: { logger },
   } = ctx
 
@@ -103,7 +107,12 @@ export async function saveInvoice(ctx: Context, next: () => Promise<any>) {
   }
 
   if (order?.status === 'invoiced') {
-    ctx.status = 400
+    logger.info({
+      message: "Order already invoiced",
+      order,
+      orderId
+    })
+    ctx.status = 304
     ctx.body = 'Order already invoiced'
 
     return
@@ -136,8 +145,7 @@ export async function saveInvoice(ctx: Context, next: () => Promise<any>) {
   let encryptedNumber: string
 
   try {
-    const responseEncryptedNumber = await getEncryptedNumber(
-      ctx,
+    const responseEncryptedNumber = await smartbill.getEncryptedNumber(
       { order },
       { corporateAddress, city, county }
     )

@@ -1,5 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 import type { InstanceOptions, IOContext } from '@vtex/api'
+import SimpleCrypto from 'simple-crypto-js'
 import { Apps, ExternalClient } from '@vtex/api'
 import { validate } from 'validate.js'
 
@@ -253,6 +254,25 @@ export default class Smartbill extends ExternalClient {
         },
       }
     )
+  }
+
+  public async getEncryptedNumber(
+    body: any,
+    address?: AddressForm
+  ): Promise<any> {
+
+    const settings = await this.getSettings()
+    const response = await this.generateInvoice(body, address)
+
+    const simpleCrypto = new SimpleCrypto(settings.smarbillApiToken)
+
+    const cipherText = simpleCrypto.encrypt(
+      JSON.stringify({ number: response.number })
+    )
+
+    response.encryptedNumber = Buffer.from(cipherText).toString('base64')
+
+    return response
   }
 
   public async generateInvoice(body: any, address?: AddressForm): Promise<any> {
