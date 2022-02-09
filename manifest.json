@@ -10,9 +10,7 @@
       "url": "https://support.vtex.com/hc/requests"
     },
     "type": "free",
-    "availableCountries": [
-      "ROU"
-    ]
+    "availableCountries": ["ROU"]
   },
   "mustUpdateAt": "2022-08-28",
   "categories": [],
@@ -27,7 +25,6 @@
     "node": "6.x",
     "docs": "0.x"
   },
-  "credentialType": "absolute",
   "policies": [
     {
       "name": "colossus-fire-event"

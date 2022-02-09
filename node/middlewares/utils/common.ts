@@ -1,5 +1,6 @@
-import { OrderItem } from '../../typings'
-import SimpleCrypto from 'simple-crypto-js'
+/* eslint-disable no-console */
+
+import type { OrderItem } from '../../typings'
 
 export const mapItems = (
   sku: any,
@@ -26,25 +27,8 @@ export const mapItems = (
   listPrice: added.price,
   sellingPrice: added.price,
   quantity: added.quantity,
-  imageUrl: imageUrl,
+  imageUrl,
   unitMultiplier: added.unitMultiplier,
   priceTags: [],
 })
 
-export async function getEncryptedNumber(ctx: any, body: any) {
-  const {
-    clients: { smartbill },
-  } = ctx
-
-  const settings = await smartbill.getSettings()
-  const response = await smartbill.generateInvoice(body)
-
-  const simpleCrypto = new SimpleCrypto(settings.smarbillApiToken)
-
-  const cipherText = simpleCrypto.encrypt(
-    JSON.stringify({ number: response.number })
-  )
-
-  response.encryptedNumber = Buffer.from(cipherText).toString('base64')
-  return response
-}
