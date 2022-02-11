@@ -15,7 +15,7 @@ vtex install vtex.smartbill
 ```json
 "dependencies": {
     ....
-    "vtex.smartbill" : "1.x"
+    "vtex.smartbill" : "2.x"
 }
 ```
 
